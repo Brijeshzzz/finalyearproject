@@ -57,17 +57,17 @@
 
         /* Glass card effect */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03); /* Lighter transparency */
-            backdrop-filter: blur(15px); /* Increased blur */
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(15px); 
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtler border */
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); /* Stronger dark shadow */
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
             padding: 30px; margin-bottom: 25px; transition: all 0.3s ease;
         }
         .glass-card:hover {
             transform: translateY(-5px); 
             box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8); 
-            border-color: rgba(0, 173, 181, 0.5); /* Teal hover glow */
+            border-color: rgba(0, 173, 181, 0.5); 
         }
 
         /* Connection Status */
@@ -75,9 +75,9 @@
         .status-dot { width: 14px; height: 14px; border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
         /* Specific Status Colors */
-        .connection-status.connected { background: linear-gradient(135deg, #059669, #10B981); border-color: #059669; } /* Emerald Green */
-        .connection-status.disconnected { background: linear-gradient(135deg, #DC2626, #EF4444); } /* Red */
-        .connection-status.connecting { background: linear-gradient(135deg, #D97706, #F59E0B); } /* Amber */
+        .connection-status.connected { background: linear-gradient(135deg, #059669, #10B981); border-color: #059669; } 
+        .connection-status.disconnected { background: linear-gradient(135deg, #DC2626, #EF4444); } 
+        .connection-status.connecting { background: linear-gradient(135deg, #D97706, #F59E0B); } 
 
         /* Dashboard and Chart Grids */
         .quad-chart-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
@@ -88,7 +88,6 @@
         .channel-title { font-size: 1.2em; font-weight: 700; color: #E0E0E0; }
         .channel-data {
             font-size: 1.5em; font-weight: 800;
-            /* Teal Gradient */
             background: linear-gradient(135deg, #00ADB5, #00C6CC);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
@@ -96,7 +95,7 @@
         .alert-indicator { padding: 5px 10px; border-radius: 8px; font-weight: 700; font-size: 0.9em; transition: all 0.3s; }
         .alert-indicator.inactive { background: rgba(107, 114, 128, 0.2); color: #9CA3AF; }
         .alert-indicator.active {
-            background: #A855F7; /* Bright Purple Alert */
+            background: #A855F7; 
             color: #0A0A1F;
             animation: flash 1s infinite alternate;
             box-shadow: 0 0 10px #A855F7;
@@ -116,7 +115,6 @@
         .stat-label { font-size: 0.9em; color: #94A3B8; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
         .stat-value {
             font-size: 2.2em; font-weight: 800;
-            /* Purple Gradient for Values */
             background: linear-gradient(135deg, #A855F7, #D8B4FE);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
@@ -129,9 +127,9 @@
 
         button { padding: 18px 24px; border: none; border-radius: 14px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-transform: uppercase; letter-spacing: 0.5px; position: relative; overflow: hidden; }
 
-        /* Button Colors - Adjusted to Nebula Palette */
+        /* Button Colors */
         .btn-primary { 
-            background: linear-gradient(135deg, #A855F7, #D8B4FE); /* Purple Action */
+            background: linear-gradient(135deg, #A855F7, #D8B4FE); 
             color: #0A0A1F;
             box-shadow: 0 4px 20px rgba(168, 85, 247, 0.5); 
         }
@@ -145,19 +143,55 @@
         .btn-secondary:hover { background: rgba(0, 173, 181, 0.2); transform: translateY(-3px); }
 
         /* Input styling */
-        .input-group label { color: #A0AEC0; }
+        .input-group label { 
+            color: #E0E0E0; /* Ensure labels are white */
+            display: flex; /* Allow icon and text to align */
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
         .input-group input, .input-group select {
             background: rgba(0, 0, 0, 0.5); 
             border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #E0E0E0; /* Ensure input text is white */
         }
         .input-group input:focus, .input-group select:focus {
-            border-color: #00ADB5; /* Teal Focus */
+            border-color: #00ADB5; 
             background: rgba(0, 0, 0, 0.7);
             box-shadow: 0 0 0 4px rgba(0, 173, 181, 0.2);
         }
 
-        /* Log container */
-        .log-container { background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); }
+        /* Log console styling */
+        .log-console-header {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #00ADB5; /* Teal header */
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid rgba(0, 173, 181, 0.3);
+        }
+
+        .log-container { 
+            background: rgba(0, 0, 0, 0.4); /* Slightly lighter background for the log area */
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin-top: 30px; 
+            color: #E0E0E0; /* Ensure default log text is white */
+        }
+
+        .log-entry {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.3s ease;
+        }
+
         .log-entry.info { color: #00ADB5; } /* Teal Info */
         .log-entry.error { color: #F87171; }
         .log-entry.warning { color: #FFD700; } /* Gold Warning */
@@ -170,23 +204,23 @@
         }
         .step-card { 
             background: rgba(255, 255, 255, 0.05); 
-            border-left: 5px solid #A855F7; /* Purple Step Mark */
-            padding: 20px 25px; /* Reduced padding slightly for lists */
+            border-left: 5px solid #A855F7; 
+            padding: 20px 25px; 
         } 
-        .step-card h4 { color: #00ADB5; } /* Teal Step Title */
+        .step-card h4 { color: #00ADB5; } 
         .step-card ol { 
-            list-style: none; /* Remove default list style */
-            counter-reset: step-counter; /* Initialize counter */
+            list-style: none; 
+            counter-reset: step-counter; 
             margin: 0;
             padding: 0;
         }
         .step-card ol li {
-            counter-increment: step-counter; /* Increment counter */
+            counter-increment: step-counter; 
             line-height: 1.4;
             color: #d1d5db; 
-            padding: 10px 0; /* Key: Added vertical padding for clear separation */
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05); /* Key: Subtle separator */
-            display: flex; /* Enable flex for alignment */
+            padding: 10px 0; 
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05); 
+            display: flex; 
             align-items: flex-start;
         }
         .step-card ol li:last-child {
@@ -197,9 +231,9 @@
             content: counter(step-counter) ".";
             font-weight: 800;
             font-size: 1.1em;
-            color: #A855F7; /* Purple number color */
+            color: #A855F7; 
             margin-right: 15px;
-            flex-shrink: 0; /* Prevent the number from shrinking */
+            flex-shrink: 0; 
         }
         
         .step-card code { background: rgba(0, 0, 0, 0.5); color: #059669; }
@@ -353,10 +387,14 @@
                 </div>
             </div>
 
-            <div class="log-container" id="logContainer">
-                <div class="log-entry success">🟢 System initialized and ready</div>
-                <div class="log-entry info">💡 Tip: Use <kbd>Ctrl</kbd> + <kbd>Space</kbd> for quick start/stop</div>
+            <div class="log-console-group">
+                 <div class="log-console-header">📜 System Console Log</div>
+                 <div class="log-container" id="logContainer">
+                    <div class="log-entry success">🟢 System initialized and ready</div>
+                    <div class="log-entry info">💡 Tip: Use <kbd>Ctrl</kbd> + <kbd>Space</kbd> for quick start/stop</div>
+                </div>
             </div>
+           
         </div>
     </div>
 
