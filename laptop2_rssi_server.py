@@ -761,3 +761,305 @@
                     },
                     "remove": {
                         "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // --- MULTI-CHANNEL DATA STRUCTURE ---
+        let channelData = {
+            1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10 },
+            2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10 },
+            3: { freq: 2462, data: [], chart: null, elementId: 'rssiChart3', valueId: 'freq3Value', alertId: 'alertIndicator3', baseline: -45 - Math.random() * 10 },
+            4: { freq: 433,  data: [], chart: null, elementId: 'rssiChart4', valueId: 'freq4Value', alertId: 'alertIndicator4', baseline: -45 - Math.random() * 10 }
+        };
+        let timeLabels = [];
+        let maxDataPoints = 60;
+        let monitoringInterval;
+        let sampleCount = 0;
+        let motionCount = 0;
+        
+        // Helper function for Chart setup
+        function createChart(ctx, data, color) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            gradient.addColorStop(0, `${color}66`); 
+            gradient.addColorStop(1, `${color}00`); 
+
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        data: data,
+                        borderColor: color,
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 0,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 100 },
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                    scales: {
+                        y: { 
+                            display: false,
+                            min: -85, 
+                            max: -30,
+                        },
+                        x: { display: false }
+                    },
+                    layout: { padding: 0 }
+                }
+            });
+        }
+        
+        // Initialize all 4 charts
+        Object.keys(channelData).forEach(key => {
+            const channel = channelData[key];
+            const ctx = document.getElementById(channel.elementId).getContext('2d');
+            
+            // Cosmic Chart Colors
+            let color;
+            if (key === '1') color = '#00ADB5'; // Teal
+            else if (key === '2') color = '#A855F7'; // Purple
+            else if (key === '3') color = '#059669'; // Green
+            else if (key === '4') color = '#FFD700'; // Gold/Yellow
+            
+            channel.chart = createChart(ctx, channel.data, color);
+        });
+
+        // --- CORE LOGIC ---
+        
+        function addLog(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const icon = { info: '🔵', error: '🔴', warning: '🟡', success: '🟢' }[type] || '🔵';
+            entry.textContent = `${icon} [${timestamp}] ${message}`;
+            logContainer.insertBefore(entry, logContainer.firstChild);
+            
+            while (logContainer.children.length > 25) { logContainer.removeChild(logContainer.lastChild); }
+        }
+
+        async function getRSSI(channelIndex) {
+            return getSimulatedRSSI(channelIndex);
+        }
+
+        function getSimulatedRSSI(channelIndex) {
+            const channel = channelData[channelIndex];
+            
+            let bias = 0;
+            if (channel.freq === 433) bias = -10;
+            
+            let rssi = channel.baseline + bias + (Math.random() - 0.5) * 3;
+            
+            if (Math.random() > 0.95 && channelIndex === 1) {
+                rssi -= 10 + Math.random() * 15;
+            } else if (Math.random() > 0.98) {
+                rssi -= 5 + Math.random() * 5;
+            }
+            
+            return rssi; 
+        }
+        
+        async function addDataPoint() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            timeLabels.push(timeStr);
+            sampleCount++;
+            
+            let totalRssi = 0;
+            let maxStdDev = 0;
+
+            for (const key in channelData) {
+                const channel = channelData[key];
+                const rssi = await getRSSI(key); 
+                
+                channel.data.push(rssi);
+                totalRssi += rssi;
+                
+                if (channel.data.length > maxDataPoints) {
+                    channel.data.shift();
+                }
+
+                // Update chart labels/data
+                channel.chart.data.labels = timeLabels;
+                channel.chart.update('none');
+
+                const stdDev = detectMotion(key);
+                document.getElementById(channel.valueId).textContent = `${rssi.toFixed(1)} dBm`;
+                
+                if (stdDev > maxStdDev) maxStdDev = stdDev;
+            }
+            
+            if (timeLabels.length > maxDataPoints) {
+                timeLabels.shift();
+            }
+
+            document.getElementById('sampleCount').textContent = sampleCount;
+            document.getElementById('avgRssi').textContent = `${(totalRssi / 4).toFixed(1)} dBm`;
+            document.getElementById('maxStdDev').textContent = maxStdDev.toFixed(2);
+        }
+        
+        function detectMotion(channelKey) {
+            const channel = channelData[channelKey];
+            const windowSize = parseInt(document.getElementById('windowSize').value);
+            const threshold = parseFloat(document.getElementById('threshold').value);
+            
+            if (channel.data.length < windowSize) return 0;
+            
+            const recentData = channel.data.slice(-windowSize);
+            const mean = recentData.reduce((a, b) => a + b) / recentData.length;
+            const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
+            const stdDev = Math.sqrt(variance); 
+            
+            const recentDrop = mean - channel.data[channel.data.length - 1];
+            
+            const isMotion = (stdDev > threshold) || (recentDrop > threshold * 1.5);
+
+            const alertIndicator = document.getElementById(channel.alertId);
+            
+            if (isMotion) {
+                alertIndicator.classList.remove('inactive');
+                alertIndicator.classList.add('active');
+                alertIndicator.textContent = 'ALERT!';
+                
+                if (alertIndicator.dataset.wasActive !== 'true') {
+                    motionCount++;
+                    document.getElementById('motionCount').textContent = motionCount;
+                    addLog(`[${channel.freq} MHz] ALERT! Std Dev: ${stdDev.toFixed(2)} > Threshold: ${threshold}`, 'error');
+                }
+                alertIndicator.dataset.wasActive = 'true';
+            } else {
+                alertIndicator.classList.remove('active');
+                alertIndicator.classList.add('inactive');
+                alertIndicator.textContent = 'NO MOTION';
+                alertIndicator.dataset.wasActive = 'false';
+            }
+            
+            return stdDev;
+        }
+        
+        // --- CONTROL FUNCTIONS (Start/Stop/Reset/Calibrate) ---
+
+        function updateConnectionStatus(status) {
+            const statusEl = document.getElementById('connectionStatus');
+            const statusText = statusEl.querySelector('span:last-child');
+            statusEl.className = 'connection-status glass-card ' + status;
+            
+            if (status === 'connected') {
+                statusText.textContent = 'Connected & Monitoring Active';
+            } else if (status === 'connecting') {
+                statusText.textContent = 'Attempting Connection...';
+            } else {
+                statusText.textContent = 'System Ready - Configure & Start';
+            }
+        }
+        
+        async function startMonitoring() {
+            const ssid = document.getElementById('ssidName').value.trim();
+            
+            if (!ssid) { addLog('Please enter Signal Transmitter Name (SSID)!', 'error'); return; }
+            stopMonitoring();
+            
+            addLog(`Starting multi-channel monitoring...`, 'info');
+            updateConnectionStatus('connecting');
+            
+            setTimeout(() => {
+                updateConnectionStatus('connected');
+                addLog(`Monitoring started! Observing 4 channels.`, 'success');
+                
+                const updateRate = parseInt(document.getElementById('updateRate').value);
+                
+                monitoringInterval = setInterval(addDataPoint, updateRate);
+                
+                document.getElementById('startBtn').disabled = true;
+            }, 1500); 
+        }
+        
+        function stopMonitoring() {
+            if (monitoringInterval) {
+                clearInterval(monitoringInterval);
+                monitoringInterval = null;
+            }
+            updateConnectionStatus('disconnected');
+            document.getElementById('startBtn').disabled = false;
+            addLog('Monitoring stopped by user.', 'warning');
+        }
+        
+        function resetData() {
+            stopMonitoring();
+            
+            Object.keys(channelData).forEach(key => {
+                channelData[key].data = [];
+                channelData[key].chart.update();
+                document.getElementById(channelData[key].valueId).textContent = '-- dBm';
+                document.getElementById(channelData[key].alertId).classList.remove('active');
+                document.getElementById(channelData[key].alertId).classList.add('inactive');
+                document.getElementById(channelData[key].alertId).textContent = 'NO MOTION';
+                document.getElementById(channelData[key].alertId).dataset.wasActive = 'false';
+                channelData[key].baseline = -45 - Math.random() * 10;
+            });
+
+            timeLabels = [];
+            sampleCount = 0;
+            motionCount = 0;
+            
+            document.getElementById('maxStdDev').textContent = '--';
+            document.getElementById('avgRssi').textContent = '--';
+            document.getElementById('sampleCount').textContent = '0';
+            document.getElementById('motionCount').textContent = '0';
+            
+            addLog('System reset - all data cleared', 'info');
+        }
+
+        function calibrate() {
+            addLog('Calibrating baseline for all channels... Keep hands clear!', 'warning');
+            
+            setTimeout(() => {
+                Object.keys(channelData).forEach(key => {
+                    const channel = channelData[key];
+                    const recent = channel.data.slice(-10);
+                    if (recent.length > 0) {
+                        const newBaseline = recent.reduce((a, b) => a + b) / recent.length;
+                        channel.baseline = newBaseline;
+                    }
+                });
+                addLog('✅ Calibration complete! New baselines set.', 'success');
+            }, 2500);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === ' ') { 
+                e.preventDefault(); 
+                if (monitoringInterval) { 
+                    stopMonitoring(); 
+                } else { 
+                    startMonitoring(); 
+                } 
+            }
+            if (e.ctrlKey && e.key === 'r') { 
+                e.preventDefault(); 
+                resetData(); 
+            }
+        });
+
+        // Auto-adjust chart on window resize
+        window.addEventListener('resize', () => {
+            Object.keys(channelData).forEach(key => channelData[key].chart.resize());
+        });
+
+        // Welcome message
+        setTimeout(() => {
+            addLog('Pro Tip: Use Ctrl+Space to start/stop quickly', 'info');
+        }, 2000);
+    </script>
+</body>
+</html>
