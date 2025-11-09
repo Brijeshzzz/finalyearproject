@@ -40,7 +40,6 @@
             height: 100%;
         }
 
-        /* --- PARTICLES.JS CONTAINER --- */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -58,7 +57,6 @@
             margin: 0 auto; 
         }
         
-        /* Header */
         .header { 
             text-align: center; 
             margin-bottom: 50px; 
@@ -84,7 +82,6 @@
             font-weight: 300; 
         }
 
-        /* Glass card effect */
         .glass-card {
             background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(15px); 
@@ -101,7 +98,6 @@
             border-color: rgba(0, 173, 181, 0.5); 
         }
 
-        /* Connection Status */
         .connection-status { 
             padding: 20px; 
             border-radius: 16px; 
@@ -136,7 +132,6 @@
             background: linear-gradient(135deg, #D97706, #F59E0B); 
         } 
 
-        /* Dashboard and Chart Grids */
         .quad-chart-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
@@ -198,7 +193,6 @@
             to { opacity: 0.5; }
         }
         
-        /* Stats Grid Row */
         .stats-grid-row { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
@@ -244,7 +238,6 @@
             height: 150px; 
         }
         
-        /* Controls Section */
         .controls-section h3 { 
             font-size: 1.5em; 
             font-weight: 800; 
@@ -334,7 +327,6 @@
             outline: none;
         }
 
-        /* Log console styling */
         .log-console-header {
             font-size: 1.1em;
             font-weight: 700;
@@ -362,12 +354,15 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
             animation: fadeIn 0.3s ease; 
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         .log-entry.info { color: #00ADB5; } 
         .log-entry.error { color: #F87171; }
         .log-entry.warning { color: #FFD700; } 
         .log-entry.success { color: #059669; } 
 
-        /* Setup Guide */
         .setup-guide {
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 173, 181, 0.1));
             border: 2px solid rgba(0, 173, 181, 0.5);
@@ -427,7 +422,6 @@
 </head>
 <body>
     
-    <!-- Animated Wave Background -->
     <div class="wave-background">
         <canvas id="waveCanvas"></canvas>
     </div>
@@ -471,7 +465,7 @@
         </div>
         
         <div class="glass-card">
-             <h3 class="chart-title">📊 Multi-Channel SDR Analysis</h3>
+             <h3>📊 Multi-Channel SDR Analysis</h3>
             
             <div class="stats-grid-row">
                 <div class="stat-box">
@@ -586,7 +580,7 @@
                  <div class="log-console-header">📜 System Console Log</div>
                  <div class="log-container" id="logContainer">
                     <div class="log-entry success">🟢 System initialized and ready</div>
-                    <div class="log-entry info">💡 Tip: Use <kbd>Ctrl</kbd> + <kbd>Space</kbd> for quick start/stop</div>
+                    <div class="log-entry info">💡 Tip: Use Ctrl + Space for quick start/stop</div>
                 </div>
             </div>
            
@@ -594,7 +588,7 @@
     </div>
 
     <script>
-        // --- ANIMATED WAVE BACKGROUND ---
+        // ANIMATED WAVE BACKGROUND
         const waveCanvas = document.getElementById('waveCanvas');
         const waveCtx = waveCanvas.getContext('2d');
         
@@ -610,7 +604,6 @@
         resizeWaveCanvas();
         window.addEventListener('resize', resizeWaveCanvas);
         
-        // Wave parameters - multiple layers with different characteristics
         const waves = [
             { amplitude: 30, frequency: 0.02, speed: 0.03, yOffset: 0.3, color: 'rgba(0, 173, 181, 0.15)', lineWidth: 2 },
             { amplitude: 40, frequency: 0.015, speed: 0.025, yOffset: 0.5, color: 'rgba(168, 85, 247, 0.12)', lineWidth: 2.5 },
@@ -625,7 +618,6 @@
             waveCtx.beginPath();
             waveCtx.moveTo(0, waveHeight * wave.yOffset);
             
-            // Draw smooth sine wave with multiple harmonics
             for (let x = 0; x <= waveWidth; x += 2) {
                 const y = waveHeight * wave.yOffset + 
                          Math.sin(x * wave.frequency + phase) * wave.amplitude +
@@ -639,7 +631,6 @@
             waveCtx.lineWidth = wave.lineWidth;
             waveCtx.stroke();
             
-            // Add subtle glow effect
             waveCtx.shadowBlur = 20;
             waveCtx.shadowColor = wave.color;
             waveCtx.stroke();
@@ -649,7 +640,6 @@
         function animateWaves() {
             waveCtx.clearRect(0, 0, waveWidth, waveHeight);
             
-            // Draw all wave layers
             waves.forEach(wave => {
                 drawWave(wave, wavePhase * wave.speed);
             });
@@ -660,114 +650,24 @@
         
         animateWaves();
 
-        // --- PARTICLES.JS INITIALIZATION SCRIPT ---
+        // PARTICLES.JS
         particlesJS('particles-js', {
             "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": ["#00ADB5", "#A855F7", "#059669"]
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#00ADB5",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#00ADB5", "#A855F7", "#059669"] },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5 },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00ADB5", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
             },
             "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "grab": { "distance": 140 }, "push": { "particles_nb": 4 } }
+            }
         });
 
-        // --- MULTI-CHANNEL DATA STRUCTURE ---
+        // MULTI-CHANNEL DATA
         let channelData = {
             1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10 },
             2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10 },
@@ -780,7 +680,6 @@
         let sampleCount = 0;
         let motionCount = 0;
         
-        // Helper function for Chart setup
         function createChart(ctx, data, color) {
             const gradient = ctx.createLinearGradient(0, 0, 0, 150);
             gradient.addColorStop(0, `${color}66`); 
@@ -788,52 +687,25 @@
 
             return new Chart(ctx, {
                 type: 'line',
-                data: {
-                    datasets: [{
-                        data: data,
-                        borderColor: color,
-                        backgroundColor: gradient,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 0,
-                    }]
-                },
+                data: { datasets: [{ data: data, borderColor: color, backgroundColor: gradient, borderWidth: 2, tension: 0.4, fill: true, pointRadius: 0 }] },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: { duration: 100 },
                     plugins: { legend: { display: false }, tooltip: { enabled: false } },
-                    scales: {
-                        y: { 
-                            display: false,
-                            min: -85, 
-                            max: -30,
-                        },
-                        x: { display: false }
-                    },
+                    scales: { y: { display: false, min: -85, max: -30 }, x: { display: false } },
                     layout: { padding: 0 }
                 }
             });
         }
         
-        // Initialize all 4 charts
         Object.keys(channelData).forEach(key => {
             const channel = channelData[key];
             const ctx = document.getElementById(channel.elementId).getContext('2d');
-            
-            // Cosmic Chart Colors
-            let color;
-            if (key === '1') color = '#00ADB5'; // Teal
-            else if (key === '2') color = '#A855F7'; // Purple
-            else if (key === '3') color = '#059669'; // Green
-            else if (key === '4') color = '#FFD700'; // Gold/Yellow
-            
+            let color = key === '1' ? '#00ADB5' : key === '2' ? '#A855F7' : key === '3' ? '#059669' : '#FFD700';
             channel.chart = createChart(ctx, channel.data, color);
         });
 
-        // --- CORE LOGIC ---
-        
         function addLog(message, type = 'info') {
             const logContainer = document.getElementById('logContainer');
             const entry = document.createElement('div');
@@ -842,35 +714,24 @@
             const icon = { info: '🔵', error: '🔴', warning: '🟡', success: '🟢' }[type] || '🔵';
             entry.textContent = `${icon} [${timestamp}] ${message}`;
             logContainer.insertBefore(entry, logContainer.firstChild);
-            
             while (logContainer.children.length > 25) { logContainer.removeChild(logContainer.lastChild); }
-        }
-
-        async function getRSSI(channelIndex) {
-            return getSimulatedRSSI(channelIndex);
         }
 
         function getSimulatedRSSI(channelIndex) {
             const channel = channelData[channelIndex];
-            
-            let bias = 0;
-            if (channel.freq === 433) bias = -10;
-            
+            let bias = channel.freq === 433 ? -10 : 0;
             let rssi = channel.baseline + bias + (Math.random() - 0.5) * 3;
-            
             if (Math.random() > 0.95 && channelIndex === 1) {
                 rssi -= 10 + Math.random() * 15;
             } else if (Math.random() > 0.98) {
                 rssi -= 5 + Math.random() * 5;
             }
-            
             return rssi; 
         }
         
         async function addDataPoint() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
             timeLabels.push(timeStr);
             sampleCount++;
             
@@ -879,29 +740,18 @@
 
             for (const key in channelData) {
                 const channel = channelData[key];
-                const rssi = await getRSSI(key); 
-                
+                const rssi = getSimulatedRSSI(key); 
                 channel.data.push(rssi);
                 totalRssi += rssi;
-                
-                if (channel.data.length > maxDataPoints) {
-                    channel.data.shift();
-                }
-
-                // Update chart labels/data
+                if (channel.data.length > maxDataPoints) { channel.data.shift(); }
                 channel.chart.data.labels = timeLabels;
                 channel.chart.update('none');
-
                 const stdDev = detectMotion(key);
                 document.getElementById(channel.valueId).textContent = `${rssi.toFixed(1)} dBm`;
-                
                 if (stdDev > maxStdDev) maxStdDev = stdDev;
             }
             
-            if (timeLabels.length > maxDataPoints) {
-                timeLabels.shift();
-            }
-
+            if (timeLabels.length > maxDataPoints) { timeLabels.shift(); }
             document.getElementById('sampleCount').textContent = sampleCount;
             document.getElementById('avgRssi').textContent = `${(totalRssi / 4).toFixed(1)} dBm`;
             document.getElementById('maxStdDev').textContent = maxStdDev.toFixed(2);
@@ -911,25 +761,20 @@
             const channel = channelData[channelKey];
             const windowSize = parseInt(document.getElementById('windowSize').value);
             const threshold = parseFloat(document.getElementById('threshold').value);
-            
             if (channel.data.length < windowSize) return 0;
             
             const recentData = channel.data.slice(-windowSize);
             const mean = recentData.reduce((a, b) => a + b) / recentData.length;
             const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
             const stdDev = Math.sqrt(variance); 
-            
             const recentDrop = mean - channel.data[channel.data.length - 1];
-            
             const isMotion = (stdDev > threshold) || (recentDrop > threshold * 1.5);
-
             const alertIndicator = document.getElementById(channel.alertId);
             
             if (isMotion) {
                 alertIndicator.classList.remove('inactive');
                 alertIndicator.classList.add('active');
                 alertIndicator.textContent = 'ALERT!';
-                
                 if (alertIndicator.dataset.wasActive !== 'true') {
                     motionCount++;
                     document.getElementById('motionCount').textContent = motionCount;
@@ -942,17 +787,13 @@
                 alertIndicator.textContent = 'NO MOTION';
                 alertIndicator.dataset.wasActive = 'false';
             }
-            
             return stdDev;
         }
-        
-        // --- CONTROL FUNCTIONS (Start/Stop/Reset/Calibrate) ---
 
         function updateConnectionStatus(status) {
             const statusEl = document.getElementById('connectionStatus');
             const statusText = statusEl.querySelector('span:last-child');
             statusEl.className = 'connection-status glass-card ' + status;
-            
             if (status === 'connected') {
                 statusText.textContent = 'Connected & Monitoring Active';
             } else if (status === 'connecting') {
@@ -964,21 +805,15 @@
         
         async function startMonitoring() {
             const ssid = document.getElementById('ssidName').value.trim();
-            
             if (!ssid) { addLog('Please enter Signal Transmitter Name (SSID)!', 'error'); return; }
             stopMonitoring();
-            
             addLog(`Starting multi-channel monitoring...`, 'info');
             updateConnectionStatus('connecting');
-            
             setTimeout(() => {
                 updateConnectionStatus('connected');
                 addLog(`Monitoring started! Observing 4 channels.`, 'success');
-                
                 const updateRate = parseInt(document.getElementById('updateRate').value);
-                
                 monitoringInterval = setInterval(addDataPoint, updateRate);
-                
                 document.getElementById('startBtn').disabled = true;
             }, 1500); 
         }
@@ -995,7 +830,6 @@
         
         function resetData() {
             stopMonitoring();
-            
             Object.keys(channelData).forEach(key => {
                 channelData[key].data = [];
                 channelData[key].chart.update();
@@ -1006,22 +840,18 @@
                 document.getElementById(channelData[key].alertId).dataset.wasActive = 'false';
                 channelData[key].baseline = -45 - Math.random() * 10;
             });
-
             timeLabels = [];
             sampleCount = 0;
             motionCount = 0;
-            
             document.getElementById('maxStdDev').textContent = '--';
             document.getElementById('avgRssi').textContent = '--';
             document.getElementById('sampleCount').textContent = '0';
             document.getElementById('motionCount').textContent = '0';
-            
             addLog('System reset - all data cleared', 'info');
         }
 
         function calibrate() {
             addLog('Calibrating baseline for all channels... Keep hands clear!', 'warning');
-            
             setTimeout(() => {
                 Object.keys(channelData).forEach(key => {
                     const channel = channelData[key];
@@ -1035,28 +865,18 @@
             }, 2500);
         }
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === ' ') { 
                 e.preventDefault(); 
-                if (monitoringInterval) { 
-                    stopMonitoring(); 
-                } else { 
-                    startMonitoring(); 
-                } 
+                if (monitoringInterval) { stopMonitoring(); } else { startMonitoring(); } 
             }
-            if (e.ctrlKey && e.key === 'r') { 
-                e.preventDefault(); 
-                resetData(); 
-            }
+            if (e.ctrlKey && e.key === 'r') { e.preventDefault(); resetData(); }
         });
 
-        // Auto-adjust chart on window resize
         window.addEventListener('resize', () => {
             Object.keys(channelData).forEach(key => channelData[key].chart.resize());
         });
 
-        // Welcome message
         setTimeout(() => {
             addLog('Pro Tip: Use Ctrl+Space to start/stop quickly', 'info');
         }, 2000);
