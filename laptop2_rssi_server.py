@@ -156,23 +156,24 @@
         .input-group input, .input-group select {
             /* Input Size & Aesthetics */
             width: 100%;
-            padding: 12px 18px; /* Increased Vertical Padding */
-            font-size: 1.1em; /* Increased Font Size */
+            padding: 14px 18px; /* Increased padding slightly for better size */
+            font-size: 1.1em; 
             font-weight: 500;
             border-radius: 10px;
             
-            /* Color and Style */
-            background: rgba(0, 0, 0, 0.7); /* Darker, richer black box */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle inner shadow for depth */
-            color: #E0E0E0; /* Ensure input text is white */
+            /* Color and Style - KEY CHANGE FOR 'BEAUTIFUL BOX' */
+            background: rgba(255, 255, 255, 0.08); /* Lighter, translucent background */
+            backdrop-filter: blur(5px); /* Added blur effect for glass look */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Clearer border */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle inner shadow for depth */
+            color: #E0E0E0; 
             transition: all 0.3s ease;
         }
         
         .input-group input:focus, .input-group select:focus {
             border-color: #00ADB5; 
-            background: rgba(0, 0, 0, 0.9); /* Even darker on focus */
-            box-shadow: 0 0 0 4px rgba(0, 173, 181, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.7); 
+            background: rgba(255, 255, 255, 0.15); /* Slightly brighter on focus */
+            box-shadow: 0 0 0 4px rgba(0, 173, 181, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5); 
         }
 
         /* Log console styling */
