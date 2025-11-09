@@ -3,45 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📡 Multi-Channel SDR System - Dynamic</title>
+    <title>📡 Multi-Channel SDR System - Wave Animation</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
-        /* --- COSMIC COLOR PALETTE --- */
+        /* --- CORE STYLES --- */
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0A0A1F; /* Deep Space Black for particle contrast */
+            background: #121827; /* Deep Blue Base */
             color: #E0E0E0;
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
-            position: relative; 
+            position: relative;
         }
 
-        /* --- PARTICLES.JS CONTAINER --- */
-        #particles-js {
+        /* --- DYNAMIC WAVE BACKGROUND IMPLEMENTATION --- */
+        
+        /* This element holds the animated wave pattern */
+        .wave-container {
             position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            background-color: transparent;
-            z-index: -2; 
+            z-index: -2;
+            overflow: hidden;
         }
 
-        /* Ensure content is above particles */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200vw; /* Double width for seamless loop */
+            height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,50 C150,150 350,0 500,50 S850,150 1000,50 L1000,100 L0,100 Z" fill="%2300ADB5"/></svg>');
+            background-repeat: repeat-x;
+            opacity: 0.1;
+            transform-origin: bottom;
+            animation: waveFlow 30s linear infinite;
+        }
+
+        /* Layered waves for complexity */
+        .wave:nth-child(2) {
+            opacity: 0.08;
+            height: 120vh;
+            animation-duration: 40s;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,30 C180,100 320,-20 500,50 S820,100 1000,30 L1000,100 L0,100 Z" fill="%23A855F7"/></svg>');
+        }
+        .wave:nth-child(3) {
+            opacity: 0.05;
+            height: 150vh;
+            animation-duration: 20s;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,60 C120,80 380,20 500,60 S880,100 1000,60 L1000,100 L0,100 Z" fill="%23059669"/></svg>');
+        }
+        
+        @keyframes waveFlow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* Shift exactly half the double width */
+        }
+        
+        /* Ensure content is above background */
         .container { 
             position: relative; 
             z-index: 1; 
             max-width: 1600px; margin: 0 auto; 
         }
-        
-        /* Header */
+
+        /* --- UI STYLING (Adjusted to ensure high contrast) --- */
+
         .header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.8s ease; }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         .header h1 {
@@ -54,10 +88,10 @@
 
         /* Glass card effect */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05); 
+            background: rgba(255, 255, 255, 0.08); /* Brighter for contrast */
             backdrop-filter: blur(15px); 
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Clearer glass border */
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
             padding: 30px; margin-bottom: 25px; transition: all 0.3s ease;
         }
@@ -256,7 +290,11 @@
 </head>
 <body>
     
-    <div id="particles-js"></div>
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
     
     <div class="container">
         
@@ -418,114 +456,7 @@
     </div>
 
     <script>
-        // --- PARTICLES.JS INITIALIZATION SCRIPT ---
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": ["#00ADB5", "#A855F7", "#059669"] /* Teal, Purple, Green */
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    },
-                    "polygon": {
-                        "nb_sides": 5
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#00ADB5", /* Teal lines */
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-        });
-
-        // --- MULTI-CHANNEL DATA STRUCTURE (Existing Logic Below) ---
+        // --- MULTI-CHANNEL DATA STRUCTURE ---
         let channelData = {
             1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10 },
             2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10 },
