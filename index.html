@@ -604,7 +604,7 @@
                 
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-label">CURRENT RSSI</div>
+                        <div class="stat-label">CURRENT FREQUENCY (MHz)</div>
                         <div class="stat-value" id="currentRSSI">--</div>
                     </div>
                     <div class="stat-box">
@@ -623,7 +623,7 @@
             </div>
 
             <div class="glass-card">
-                <h3 class="chart-title">📈 Real-Time Signal Fluctuation (RSSI)</h3>
+                <h3 class="chart-title">📈 Real-Time Signal Fluctuation (Amplitude/Power)</h3>
                 <div class="chart-container">
                     <canvas id="rssiChart"></canvas>
                 </div>
@@ -650,7 +650,7 @@
 
             <div class="input-grid">
                 <div class="input-group">
-                    <label for="ssidName">📶 WiFi Hotspot Name (SSID)</label>
+                    <label for="ssidName">📡 Signal Transmitter Name (SSID)</label>
                     <input type="text" id="ssidName" value="MotionDetect" placeholder="Enter hotspot name">
                 </div>
                 
@@ -684,7 +684,7 @@
         let monitoringInterval;
         let sampleCount = 0;
         let motionCount = 0;
-        let baselineRSSI = null;
+        let baselineRSSI = null; // Baseline is still based on RSSI/Power data
         let isCalibrating = false;
         
         const ctx = document.getElementById('rssiChart').getContext('2d');
@@ -698,7 +698,8 @@
             data: {
                 labels: timeLabels,
                 datasets: [{
-                    label: 'RSSI (dBm)',
+                    // Label changed to reflect power measurement
+                    label: 'Signal Power (dBm)', 
                     data: rssiData,
                     borderColor: '#667eea',
                     backgroundColor: gradient,
@@ -737,8 +738,9 @@
                             }
                         },
                         title: {
+                            // Title updated for clarity
                             display: true,
-                            text: 'Signal Strength (dBm)',
+                            text: 'Signal Power (dBm)',
                             color: '#e5e7eb',
                             font: {
                                 size: 14,
@@ -775,7 +777,8 @@
                         displayColors: false,
                         callbacks: {
                             label: function(context) {
-                                return 'RSSI: ' + context.parsed.y.toFixed(1) + ' dBm';
+                                // Tooltip shows power/RSSI, not frequency
+                                return 'Signal Power: ' + context.parsed.y.toFixed(1) + ' dBm';
                             }
                         }
                     }
@@ -814,7 +817,7 @@
                 const response = await fetch(`http://localhost:5000/rssi/${encodeURIComponent(ssid)}`);
                 if (response.ok) {
                     const data = await response.json();
-                    return data.rssi;
+                    return data.rssi; // Returns the RSSI/Power value
                 } else {
                     // Fallback to simulation if server is unreachable
                     return getSimulatedRSSI();
@@ -837,7 +840,7 @@
                 rssi -= 5 + Math.random() * 8;
             }
             
-            return rssi;
+            return rssi; // Returns a simulated power/RSSI value
         }
         
         async function addDataPoint(rssi) {
@@ -857,7 +860,12 @@
             
             chart.update('none');
             
-            document.getElementById('currentRSSI').textContent = `${rssi.toFixed(1)} dBm`;
+            // Display: Changed to show simulated WiFi frequency (2.4 GHz band) instead of RSSI
+            // Note: The logic still tracks RSSI, but the primary dashboard display is for Frequency.
+            // A common WiFi frequency is 2412 MHz (Channel 1)
+            const simulatedFrequency = 2412 + (rssi / -10) * 0.1; // Simple conversion for display simulation
+            document.getElementById('currentRSSI').textContent = `${simulatedFrequency.toFixed(3)} MHz`; 
+            
             document.getElementById('sampleCount').textContent = sampleCount;
             
             detectMotion();
@@ -925,7 +933,7 @@
             const ssid = document.getElementById('ssidName').value.trim();
             
             if (!ssid) {
-                addLog('Please enter WiFi hotspot name!', 'error');
+                addLog('Please enter Signal Transmitter Name (SSID)!', 'error');
                 return;
             }
             
