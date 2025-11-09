@@ -168,14 +168,40 @@
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 173, 181, 0.1));
             border: 2px solid rgba(0, 173, 181, 0.5);
         }
-        .step-card { background: rgba(255, 255, 255, 0.05); border-left: 5px solid #A855F7; } /* Purple Step Mark */
+        .step-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            border-left: 5px solid #A855F7; /* Purple Step Mark */
+            padding: 20px 25px; /* Reduced padding slightly for lists */
+        } 
         .step-card h4 { color: #00ADB5; } /* Teal Step Title */
         .step-card ol { 
-            line-height: 2.2; /* Increased vertical line height */
-            margin-left: 20px; 
-            color: #d1d5db; 
-            padding: 5px 0; /* Added padding to space out list items */
+            list-style: none; /* Remove default list style */
+            counter-reset: step-counter; /* Initialize counter */
+            margin: 0;
+            padding: 0;
         }
+        .step-card ol li {
+            counter-increment: step-counter; /* Increment counter */
+            line-height: 1.4;
+            color: #d1d5db; 
+            padding: 10px 0; /* Key: Added vertical padding for clear separation */
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05); /* Key: Subtle separator */
+            display: flex; /* Enable flex for alignment */
+            align-items: flex-start;
+        }
+        .step-card ol li:last-child {
+            border-bottom: none;
+        }
+
+        .step-card ol li::before {
+            content: counter(step-counter) ".";
+            font-weight: 800;
+            font-size: 1.1em;
+            color: #A855F7; /* Purple number color */
+            margin-right: 15px;
+            flex-shrink: 0; /* Prevent the number from shrinking */
+        }
+        
         .step-card code { background: rgba(0, 0, 0, 0.5); color: #059669; }
     </style>
 </head>
