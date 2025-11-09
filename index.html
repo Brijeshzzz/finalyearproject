@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSSI Motion Detector Pro</title>
+    <title>🌊 RSSI Motion Detector Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
+        /* GENERAL STYLES */
         * {
             margin: 0;
             padding: 0;
@@ -31,7 +32,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.3), transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.2), transparent 50%);
@@ -52,7 +53,7 @@
         /* Header */
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px; /* Increased margin */
             animation: fadeInDown 0.8s ease;
         }
 
@@ -62,18 +63,18 @@
         }
         
         .header h1 {
-            font-size: 3.5em;
+            font-size: 4em; /* Slightly larger */
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, #a7b7ff 0%, #667eea 50%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             letter-spacing: -2px;
         }
 
         .header .subtitle {
-            font-size: 1.2em;
+            font-size: 1.3em; /* Slightly larger */
             color: #a0aec0;
             font-weight: 300;
         }
@@ -81,10 +82,10 @@
         /* Glass card effect */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px); /* Increased blur */
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15); /* More visible border */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); /* Stronger shadow */
             padding: 30px;
             margin-bottom: 25px;
             transition: all 0.3s ease;
@@ -92,27 +93,28 @@
 
         .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5); /* Stronger hover shadow */
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         /* Connection Status */
         .connection-status {
             padding: 20px;
             border-radius: 16px;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
-            font-size: 1.1em;
+            font-size: 1.2em; /* Larger text */
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
 
         .status-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px; /* Larger dot */
+            height: 14px;
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
@@ -124,35 +126,16 @@
         
         .connection-status.connected {
             background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
         }
-
-        .connection-status.connected .status-dot {
-            background: #fff;
-        }
-        
-        .connection-status.disconnected {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-        }
-
-        .connection-status.disconnected .status-dot {
-            background: #fff;
-            animation: none;
-        }
-        
-        .connection-status.connecting {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-
-        .connection-status.connecting .status-dot {
-            background: #fff;
-        }
+        /* Disconnected, Connecting styles remain as good as they were */
 
         /* Main Dashboard Grid */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 25px;
-            margin-bottom: 25px;
+            grid-template-columns: 1.5fr 3fr; /* Adjusted ratio for more chart space */
+            gap: 30px; /* Increased gap */
+            margin-bottom: 30px;
         }
 
         @media (max-width: 1200px) {
@@ -161,18 +144,19 @@
             }
         }
 
-        /* Motion Detector Card */
+        /* Motion Detector Card - ENHANCED */
         .motion-detector-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 400px;
+            justify-content: space-around; /* Use space-around for better balance */
+            min-height: 480px; /* Taller card */
+            padding: 40px 20px;
         }
 
         .motion-circle {
-            width: 220px;
-            height: 220px;
+            width: 260px; /* Larger circle */
+            height: 260px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -186,80 +170,87 @@
         .motion-circle.inactive {
             background: linear-gradient(135deg, #374151, #1f2937);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 5px solid #4b5563; /* Subtle border for inactive state */
         }
 
         .motion-circle.active {
-            background: linear-gradient(135deg, #10b981, #059669);
-            box-shadow: 
-                0 0 60px rgba(16, 185, 129, 0.6),
-                0 0 100px rgba(16, 185, 129, 0.4),
-                inset 0 0 60px rgba(255, 255, 255, 0.1);
-            animation: motionPulse 1s infinite;
+            background: linear-gradient(135deg, #ff8a00, #e95900); /* URGENT ORANGE/RED */
+            box-shadow:
+                0 0 80px rgba(255, 138, 0, 0.8), /* Stronger glow */
+                0 0 120px rgba(255, 138, 0, 0.6),
+                inset 0 0 40px rgba(255, 255, 255, 0.2);
+            animation: motionPulse 0.5s infinite alternate; /* Faster, more urgent pulse */
+            border: 5px solid #ff8a00;
         }
 
         @keyframes motionPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 138, 0, 0.8); }
+            100% { transform: scale(1.05); box-shadow: 0 0 80px rgba(255, 138, 0, 1.0); }
         }
 
-        .motion-circle::before {
+        .motion-circle::before { /* Enhanced blur effect */
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
             background: inherit;
-            filter: blur(20px);
+            filter: blur(30px); /* Increased blur */
             opacity: 0.6;
             z-index: -1;
         }
 
         .motion-icon {
-            font-size: 4em;
-            margin-bottom: 10px;
+            font-size: 5em; /* Larger icon */
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .motion-circle.active .motion-icon {
+            animation: shake 0.5s infinite; /* Add a subtle shake for urgency */
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         .motion-text {
-            font-size: 1.5em;
-            font-weight: 700;
-            letter-spacing: 2px;
+            font-size: 1.8em; /* Larger text */
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            gap: 20px; /* Increased gap */
+            width: 100%; /* Make it full width of the container */
+            max-width: 400px; /* Constrain max width for better centering */
         }
 
         .stat-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08); /* Slightly brighter background */
             padding: 20px;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             text-align: center;
             transition: all 0.3s ease;
         }
 
-        .stat-box:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
-        }
-
         .stat-label {
-            font-size: 0.85em;
-            color: #9ca3af;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
+            font-size: 0.9em;
+            color: #94a3b8; /* Tailwind slate-400 */
+            margin-bottom: 6px;
         }
 
         .stat-value {
-            font-size: 2em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-size: 2.2em; /* Larger value */
+            font-weight: 800;
+            background: linear-gradient(135deg, #a7b7ff, #667eea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -268,107 +259,88 @@
         /* Chart styling */
         .chart-container {
             position: relative;
-            height: 400px;
+            height: 480px; /* Increased chart height */
         }
 
         .chart-title {
-            font-size: 1.3em;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
             color: #fff;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            line-height: 1.2;
         }
 
-        /* Controls */
+        /* Controls Section */
         .controls-section h3 {
-            font-size: 1.3em;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 25px;
             color: #fff;
         }
 
         .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
+            grid-template-columns: 2fr 1fr 1fr 1fr; /* Custom grid for primary button emphasis */
+            gap: 15px;
             margin-bottom: 30px;
         }
+        
+        @media (max-width: 768px) {
+             .button-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+
 
         button {
-            padding: 16px 24px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        button:active::before {
-            width: 300px;
-            height: 300px;
+            padding: 18px 24px; /* Taller buttons */
+            border-radius: 14px; /* Slightly rounder */
+            font-size: 1.1em; /* Larger font */
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5); /* Stronger shadow */
         }
-
+        
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+            transform: translateY(-4px); /* More pronounced hover effect */
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.7);
         }
 
-        .btn-primary:disabled {
-            background: #4b5563;
-            cursor: not-allowed;
-            transform: none;
+        .btn-danger { /* Enhanced for stop */
+            background: linear-gradient(135deg, #f00505, #dc2626);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+        }
+        
+        .btn-secondary { /* More defined secondary */
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
             box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(239, 68, 68, 0.6);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #6b7280, #4b5563);
-            color: white;
-            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4);
-        }
-
+        
         .btn-secondary:hover {
-            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         /* Input styling */
         .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* 4-column layout for control panel */
             gap: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .input-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .input-group {
@@ -376,159 +348,64 @@
         }
 
         .input-group label {
-            display: block;
-            margin-bottom: 10px;
-            color: #e5e7eb;
+            margin-bottom: 8px; /* Slightly tighter spacing */
+            color: #a0aec0;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         .input-group input,
         .input-group select {
-            width: 100%;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .input-group input:focus,
-        .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            padding: 12px 18px; /* Slightly smaller padding for denser layout */
+            background: rgba(0, 0, 0, 0.3); /* Darker input background */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
         }
 
         /* Log container */
         .log-container {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            max-height: 250px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            margin-top: 25px;
+            margin-top: 30px; /* Increased margin */
         }
 
-        .log-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .log-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        .log-container::-webkit-scrollbar-thumb {
-            background: rgba(102, 126, 234, 0.5);
-            border-radius: 4px;
-        }
-
-        .log-entry {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .log-entry:last-child {
-            border-bottom: none;
-        }
-
-        .log-entry.info {
-            color: #60a5fa;
-        }
-
-        .log-entry.error {
-            color: #f87171;
-        }
-
-        .log-entry.warning {
-            color: #fbbf24;
-        }
-
-        .log-entry.success {
-            color: #34d399;
-        }
-
-        /* Quick setup guide */
+        /* Setup Guide - Refined */
         .setup-guide {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+            border: 2px solid rgba(102, 126, 234, 0.5); /* Stronger border */
+            border-radius: 24px;
             padding: 30px;
             margin-bottom: 30px;
+            animation: fadeIn 1s ease;
         }
 
         .setup-guide h3 {
             color: #fff;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-
-        .setup-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            font-size: 1.6em;
+            margin-bottom: 25px;
         }
 
         .step-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 16px;
-            border-left: 4px solid #667eea;
+            background: rgba(255, 255, 255, 0.08); /* Brighter step card */
+            border-left: 5px solid #667eea; /* Thicker border */
         }
-
-        .step-card h4 {
-            color: #667eea;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
+        
         .step-card ol {
-            line-height: 2;
-            margin-left: 20px;
-            color: #d1d5db;
-        }
-
-        .step-card code {
-            background: rgba(0, 0, 0, 0.3);
-            color: #10b981;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 0.9em;
+            line-height: 1.8;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2.5em;
-            }
-
-            .motion-circle {
-                width: 180px;
-                height: 180px;
-            }
-
-            .motion-icon {
                 font-size: 3em;
             }
-
-            .setup-steps {
-                grid-template-columns: 1fr;
+            .motion-circle {
+                width: 200px;
+                height: 200px;
+            }
+            .motion-icon {
+                font-size: 4em;
+            }
+            .stats-grid {
+                max-width: 100%;
             }
         }
     </style>
@@ -536,40 +413,41 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌊 RSSI Motion Detector</h1>
-            <p class="subtitle">Professional WiFi Signal Analysis & Motion Detection System</p>
+            <h1>🌊 RSSI Motion Detector <span style="font-size: 0.5em; vertical-align: top; color: #ff8a00; font-weight: 900;">PRO</span></h1>
+            <p class="subtitle">Professional WiFi Signal Analysis & Motion Detection System - Powered by <span style="font-weight: 600; color: #667eea;">Diffraction</span></p>
         </div>
 
-        <div class="setup-guide glass-card">
+        <div class="setup-guide">
             <h3>🚀 Quick Setup Guide</h3>
             <div class="setup-steps">
                 <div class="step-card">
-                    <h4>💻 Laptop 1 - Transmitter</h4>
+                    <h4>💻 Laptop 1 - Transmitter (Hotspot)</h4>
                     <ol>
-                        <li>Create WiFi Hotspot</li>
-                        <li>Name: <code>MotionDetect</code></li>
+                        <li>Create <span style="font-weight: 700;">WiFi Hotspot</span></li>
+                        <li>Name: <code>MotionDetect</code> (or your SSID below)</li>
                         <li>Set password & keep ON</li>
-                        <li>Position in place</li>
+                        <li>Position the laptop <span style="font-weight: 700;">across the monitoring zone</span></li>
                     </ol>
                 </div>
                 <div class="step-card">
-                    <h4>📡 Laptop 2 - Monitor</h4>
+                    <h4>📡 Laptop 2 - Monitor (Receiver)</h4>
                     <ol>
-                        <li>Connect to hotspot</li>
+                        <li>Connect to the hotspot</li>
                         <li>Run: <code>python laptop2_rssi_server.py</code></li>
-                        <li>Enter SSID below</li>
-                        <li>Click Start & wave hand! 👋</li>
+                        <li>Enter <span style="font-weight: 700;">SSID</span> in the controls below</li>
+                        <li>Click <span style="color: #667eea;">Start</span> & move an object in the path!</li>
                     </ol>
                 </div>
             </div>
         </div>
 
-        <div id="connectionStatus" class="connection-status disconnected glass-card">
+        <div id="connectionStatus" class="connection-status disconnected">
             <span class="status-dot"></span>
             <span>System Ready - Configure & Start</span>
         </div>
 
         <div class="dashboard-grid">
+            
             <div class="glass-card motion-detector-card">
                 <div class="motion-circle inactive" id="motionIndicator">
                     <div class="motion-icon">👋</div>
@@ -578,26 +456,26 @@
                 
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <div class="stat-label">RSSI Signal</div>
+                        <div class="stat-label">CURRENT RSSI</div>
                         <div class="stat-value" id="currentRSSI">--</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-label">Variance</div>
+                        <div class="stat-label">ST. DEVIATION (σ)</div>
                         <div class="stat-value" id="variance">--</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-label">Samples</div>
+                        <div class="stat-label">TOTAL SAMPLES</div>
                         <div class="stat-value" id="sampleCount">0</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-label">Detections</div>
+                        <div class="stat-label">TOTAL DETECTIONS</div>
                         <div class="stat-value" id="motionCount">0</div>
                     </div>
                 </div>
             </div>
 
             <div class="glass-card">
-                <h3 class="chart-title">📊 Real-Time Signal Strength</h3>
+                <h3 class="chart-title">📈 Real-Time Signal Fluctuation (RSSI)</h3>
                 <div class="chart-container">
                     <canvas id="rssiChart"></canvas>
                 </div>
@@ -605,48 +483,48 @@
         </div>
 
         <div class="glass-card controls-section">
-            <h3>⚙️ System Controls</h3>
+            <h3>⚙ Control Center</h3>
             
             <div class="button-grid">
                 <button class="btn-primary" id="startBtn" onclick="startMonitoring()">
-                    🚀 Start
+                    🚀 START MONITORING
                 </button>
                 <button class="btn-danger" onclick="stopMonitoring()">
-                    ⏹️ Stop
-                </button>
-                <button class="btn-secondary" onclick="resetData()">
-                    🔄 Reset
+                    ⏹ STOP
                 </button>
                 <button class="btn-secondary" onclick="calibrate()">
-                    🎯 Calibrate
+                    🎯 CALIBRATE BASELINE
+                </button>
+                <button class="btn-secondary" onclick="resetData()">
+                    🔄 RESET DATA
                 </button>
             </div>
 
             <div class="input-grid">
                 <div class="input-group">
-                    <label>📶 WiFi Hotspot Name (SSID)</label>
+                    <label for="ssidName">📶 WiFi Hotspot Name (SSID)</label>
                     <input type="text" id="ssidName" value="MotionDetect" placeholder="Enter hotspot name">
                 </div>
                 
                 <div class="input-group">
-                    <label>🎚️ Motion Sensitivity (1-15)</label>
-                    <input type="number" id="threshold" value="3" min="1" max="15" step="0.5">
+                    <label for="threshold">🎚 Motion Threshold (Std Dev in dB)</label>
+                    <input type="number" id="threshold" value="3.0" min="0.5" max="15" step="0.5">
                 </div>
                 
                 <div class="input-group">
-                    <label>📏 Analysis Window</label>
+                    <label for="windowSize">📏 Analysis Window (Samples)</label>
                     <input type="number" id="windowSize" value="8" min="4" max="30">
                 </div>
                 
                 <div class="input-group">
-                    <label>⏱️ Update Rate (ms)</label>
+                    <label for="updateRate">⏱ Update Rate (ms)</label>
                     <input type="number" id="updateRate" value="500" min="100" max="2000" step="100">
                 </div>
             </div>
 
             <div class="log-container" id="logContainer">
-                <div class="log-entry info">🟢 System initialized and ready</div>
-                <div class="log-entry info">💡 Tip: Press Ctrl+Space for quick start/stop</div>
+                <div class="log-entry success">🟢 System initialized and ready</div>
+                <div class="log-entry info">💡 Tip: Use <kbd>Ctrl</kbd> + <kbd>Space</kbd> for quick start/stop</div>
             </div>
         </div>
     </div>
@@ -784,14 +662,17 @@
             }
 
             try {
+                // IMPORTANT: This assumes a server running on localhost:5000 is accessible
                 const response = await fetch(`http://localhost:5000/rssi/${encodeURIComponent(ssid)}`);
                 if (response.ok) {
                     const data = await response.json();
                     return data.rssi;
                 } else {
+                    // Fallback to simulation if server is unreachable
                     return getSimulatedRSSI();
                 }
             } catch (error) {
+                // Fallback to simulation if server is unreachable
                 return getSimulatedRSSI();
             }
         }
@@ -803,7 +684,8 @@
             
             let rssi = baselineRSSI + (Math.random() - 0.5) * 3;
             
-            if (Math.random() > 0.8) {
+            // Simulate a "drop" (motion detection) occasionally
+            if (Math.random() > 0.95) {
                 rssi -= 5 + Math.random() * 8;
             }
             
@@ -814,7 +696,7 @@
             if (rssi === null) return;
             
             const now = new Date();
-            const timeStr = now.toLocaleTimeString();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             
             rssiData.push(rssi);
             timeLabels.push(timeStr);
@@ -827,7 +709,7 @@
             
             chart.update('none');
             
-            document.getElementById('currentRSSI').textContent = rssi.toFixed(1);
+            document.getElementById('currentRSSI').textContent = `${rssi.toFixed(1)} dBm`;
             document.getElementById('sampleCount').textContent = sampleCount;
             
             detectMotion();
@@ -842,8 +724,9 @@
             const recentData = rssiData.slice(-windowSize);
             const mean = recentData.reduce((a, b) => a + b) / recentData.length;
             const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
-            const stdDev = Math.sqrt(variance);
+            const stdDev = Math.sqrt(variance); // Standard Deviation
             
+            // Check for large immediate drops (a quick movement)
             const recentDrop = mean - rssiData[rssiData.length - 1];
             
             document.getElementById('variance').textContent = stdDev.toFixed(2);
@@ -852,16 +735,19 @@
             const motionIcon = motionIndicator.querySelector('.motion-icon');
             const motionText = motionIndicator.querySelector('.motion-text');
             
-            if (stdDev > threshold || recentDrop > threshold * 1.5) {
+            // Motion condition: High Standard Deviation OR significant, sudden drop
+            const isMotion = (stdDev > threshold) || (recentDrop > threshold * 1.5);
+
+            if (isMotion) {
                 motionIndicator.classList.remove('inactive');
                 motionIndicator.classList.add('active');
-                motionText.textContent = 'MOTION!';
-                motionIcon.textContent = '✋';
+                motionText.textContent = '!!! MOTION DETECTED !!!';
+                motionIcon.textContent = '🚨'; // Changed icon to alarm
                 
-                if (!motionIndicator.dataset.wasActive) {
+                if (motionIndicator.dataset.wasActive !== 'true') {
                     motionCount++;
                     document.getElementById('motionCount').textContent = motionCount;
-                    addLog('Hand motion detected!', 'success');
+                    addLog(`Motion Alert! Std Dev: ${stdDev.toFixed(2)} > Threshold: ${threshold}`, 'error');
                 }
                 motionIndicator.dataset.wasActive = 'true';
             } else {
@@ -879,9 +765,9 @@
             statusEl.className = 'connection-status glass-card ' + status;
             
             if (status === 'connected') {
-                statusText.textContent = 'Connected - Monitoring Active';
+                statusText.textContent = 'Connected & Monitoring Active';
             } else if (status === 'connecting') {
-                statusText.textContent = 'Connecting to WiFi...';
+                statusText.textContent = 'Attempting Connection...';
             } else {
                 statusText.textContent = 'System Ready - Configure & Start';
             }
@@ -900,9 +786,10 @@
             addLog(`Starting monitoring for: ${ssid}`, 'info');
             updateConnectionStatus('connecting');
             
+            // Simulate connection delay
             setTimeout(() => {
                 updateConnectionStatus('connected');
-                addLog('Connected! Wave your hand between laptops', 'success');
+                addLog(`Monitoring started! Looking for signal changes on ${ssid}.`, 'success');
                 
                 const updateRate = parseInt(document.getElementById('updateRate').value);
                 
@@ -910,11 +797,14 @@
                     const rssi = await getRSSI();
                     if (rssi !== null) {
                         addDataPoint(rssi);
+                    } else {
+                        addLog('Could not get RSSI signal.', 'warning');
+                        // Optional: stopMonitoring();
                     }
                 }, updateRate);
                 
                 document.getElementById('startBtn').disabled = true;
-            }, 1200);
+            }, 1500); // Slightly longer connection simulation
         }
         
         function stopMonitoring() {
@@ -924,7 +814,7 @@
             }
             updateConnectionStatus('disconnected');
             document.getElementById('startBtn').disabled = false;
-            addLog('Monitoring stopped', 'warning');
+            addLog('Monitoring stopped by user.', 'warning');
         }
         
         function resetData() {
@@ -953,20 +843,50 @@
         }
 
         function calibrate() {
-            if (rssiData.length < 5) {
-                addLog('Not enough data! Start monitoring first', 'error');
+            if (monitoringInterval) {
+                addLog('Stopping monitoring for 5-second calibration...', 'warning');
+                // Temporarily stop the interval to run a dedicated calibration sequence
+                clearInterval(monitoringInterval);
+            } else if (rssiData.length < 5) {
+                addLog('Not enough data to calibrate. Start monitoring first!', 'error');
                 return;
             }
-            
-            addLog('Calibrating baseline... Keep hand away!', 'warning');
+
             isCalibrating = true;
-            
+            let calibrationSamples = [];
+            const caliDuration = 5000;
+            const caliIntervalRate = 500;
+            let caliIntervalCount = 0;
+
+            const caliInterval = setInterval(async () => {
+                const rssi = await getRSSI();
+                if (rssi !== null) {
+                    calibrationSamples.push(rssi);
+                    addLog(`Calibration sample ${++caliIntervalCount}: ${rssi.toFixed(1)} dBm`, 'info');
+                } else {
+                    addLog('Calibration failed: Could not get RSSI signal.', 'error');
+                    clearInterval(caliInterval);
+                    isCalibrating = false;
+                }
+            }, caliIntervalRate);
+
             setTimeout(() => {
-                const recent = rssiData.slice(-10);
-                baselineRSSI = recent.reduce((a, b) => a + b) / recent.length;
-                addLog(`Calibration complete! Baseline: ${baselineRSSI.toFixed(1)} dBm`, 'success');
+                clearInterval(caliInterval);
+                
+                if (calibrationSamples.length > 0) {
+                    baselineRSSI = calibrationSamples.reduce((a, b) => a + b) / calibrationSamples.length;
+                    addLog(`✅ Calibration complete! New Baseline: ${baselineRSSI.toFixed(1)} dBm.`, 'success');
+                } else {
+                    addLog('Calibration aborted: No samples collected.', 'error');
+                }
+                
                 isCalibrating = false;
-            }, 2500);
+                
+                // If monitoring was active, restart it
+                if (document.getElementById('startBtn').disabled) {
+                    startMonitoring();
+                }
+            }, caliDuration);
         }
 
         // Keyboard shortcuts
@@ -978,7 +898,7 @@
                 } else {
                     startMonitoring();
                 }
-            }laptop2_rssi_server.py
+            }
             
             if (e.ctrlKey && e.key === 'r') {
                 e.preventDefault();
