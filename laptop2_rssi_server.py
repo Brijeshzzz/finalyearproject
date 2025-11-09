@@ -156,23 +156,33 @@
         .input-group input, .input-group select {
             /* Input Size & Aesthetics */
             width: 100%;
-            padding: 14px 18px; /* Increased padding slightly for better size */
+            padding: 14px 18px; 
             font-size: 1.1em; 
             font-weight: 500;
             border-radius: 10px;
             
-            /* Color and Style - KEY CHANGE FOR 'BEAUTIFUL BOX' */
+            /* Color and Style - KEY CHANGES HERE */
             background: rgba(255, 255, 255, 0.08); /* Lighter, translucent background */
             backdrop-filter: blur(5px); /* Added blur effect for glass look */
             border: 1px solid rgba(255, 255, 255, 0.2); /* Clearer border */
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle inner shadow for depth */
             color: #E0E0E0; 
             transition: all 0.3s ease;
+            
+            /* Sizing Fixes */
+            max-width: 300px; /* Limit max width for better proportion on wide screens */
+            min-width: 150px;
+        }
+        
+        @media (max-width: 768px) {
+            .input-group input, .input-group select {
+                max-width: 100%; /* Full width on smaller screens */
+            }
         }
         
         .input-group input:focus, .input-group select:focus {
             border-color: #00ADB5; 
-            background: rgba(255, 255, 255, 0.15); /* Slightly brighter on focus */
+            background: rgba(255, 255, 255, 0.15); 
             box-shadow: 0 0 0 4px rgba(0, 173, 181, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5); 
         }
 
