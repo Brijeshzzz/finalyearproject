@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📡 Multi-Channel SDR System - Dynamic</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
@@ -21,7 +20,7 @@
             position: relative; 
         }
 
-        /* --- ANIMATED WAVE BACKGROUND --- */
+        /* ANIMATED WAVE BACKGROUND */
         .wave-background {
             position: fixed;
             width: 100%;
@@ -30,6 +29,7 @@
             left: 0;
             z-index: -3;
             overflow: hidden;
+            background: linear-gradient(180deg, #0A0A1F 0%, #0F0F2E 50%, #0A0A1F 100%);
         }
 
         .wave-background canvas {
@@ -40,14 +40,15 @@
             height: 100%;
         }
 
-        #particles-js {
+        /* PARTICLE CANVAS */
+        #particleCanvas {
             position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            background-color: transparent;
-            z-index: -2; 
+            z-index: -2;
+            pointer-events: none;
         }
 
         .container { 
@@ -426,7 +427,7 @@
         <canvas id="waveCanvas"></canvas>
     </div>
     
-    <div id="particles-js"></div>
+    <canvas id="particleCanvas"></canvas>
     
     <div class="container">
         
@@ -591,7 +592,6 @@
         // ANIMATED WAVE BACKGROUND
         const waveCanvas = document.getElementById('waveCanvas');
         const waveCtx = waveCanvas.getContext('2d');
-        
         let waveWidth, waveHeight;
         
         function resizeWaveCanvas() {
@@ -623,14 +623,12 @@
                          Math.sin(x * wave.frequency + phase) * wave.amplitude +
                          Math.sin(x * wave.frequency * 0.5 + phase * 1.3) * (wave.amplitude * 0.5) +
                          Math.sin(x * wave.frequency * 2 + phase * 0.7) * (wave.amplitude * 0.3);
-                
                 waveCtx.lineTo(x, y);
             }
             
             waveCtx.strokeStyle = wave.color;
             waveCtx.lineWidth = wave.lineWidth;
             waveCtx.stroke();
-            
             waveCtx.shadowBlur = 20;
             waveCtx.shadowColor = wave.color;
             waveCtx.stroke();
@@ -639,33 +637,91 @@
         
         function animateWaves() {
             waveCtx.clearRect(0, 0, waveWidth, waveHeight);
-            
             waves.forEach(wave => {
                 drawWave(wave, wavePhase * wave.speed);
             });
-            
             wavePhase += 1;
             requestAnimationFrame(animateWaves);
         }
         
         animateWaves();
 
-        // PARTICLES.JS
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": ["#00ADB5", "#A855F7", "#059669"] },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5 },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#00ADB5", "opacity": 0.4, "width": 1 },
-                "move": { "enable": true, "speed": 2 }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
-                "modes": { "grab": { "distance": 140 }, "push": { "particles_nb": 4 } }
+        // PARTICLE SYSTEM (Self-contained)
+        const particleCanvas = document.getElementById('particleCanvas');
+        const particleCtx = particleCanvas.getContext('2d');
+        let particles = [];
+        
+        function resizeParticleCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        
+        resizeParticleCanvas();
+        window.addEventListener('resize', resizeParticleCanvas);
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * particleCanvas.width;
+                this.y = Math.random() * particleCanvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+                const colors = ['rgba(0, 173, 181, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(5, 150, 105, 0.6)'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
             }
-        });
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > particleCanvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > particleCanvas.height) this.vy *= -1;
+            }
+            
+            draw() {
+                particleCtx.beginPath();
+                particleCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                particleCtx.fillStyle = this.color;
+                particleCtx.fill();
+            }
+        }
+        
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+        
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        particleCtx.beginPath();
+                        particleCtx.strokeStyle = `rgba(0, 173, 181, ${0.4 * (1 - distance / 150)})`;
+                        particleCtx.lineWidth = 1;
+                        particleCtx.moveTo(particles[i].x, particles[i].y);
+                        particleCtx.lineTo(particles[j].x, particles[j].y);
+                        particleCtx.stroke();
+                    }
+                }
+            }
+        }
+        
+        function animateParticles() {
+            particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+        
+        animateParticles();
 
         // MULTI-CHANNEL DATA
         let channelData = {
