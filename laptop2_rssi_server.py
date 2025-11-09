@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📡 Multi-Channel SDR System - Animated</title>
+    <title>📡 Multi-Channel SDR System - Dynamic</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
         
@@ -13,57 +14,37 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #121827; /* Deep Tech Blue */
+            background: #0A0A1F; /* Deep Space Black for better particle contrast */
             color: #E0E0E0;
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
+            position: relative; /* Needed for z-index with particles */
         }
 
-        /* --- NEW WAVE BACKGROUND ANIMATION --- */
-        
-        /* 1. The main animated element */
-        .wave-background {
-            content: '';
+        /* --- PARTICLES.JS CONTAINER --- */
+        #particles-js {
             position: fixed;
+            width: 100%;
+            height: 100%;
             top: 0;
             left: 0;
-            width: 300%; /* Wider than screen for seamless looping */
-            height: 100vh;
-            z-index: -1;
-            /* Create the repeated horizontal line pattern */
-            background: 
-                linear-gradient(to right, 
-                    rgba(0, 173, 181, 0.1) 1px, transparent 1px, 
-                    transparent 100px),
-                linear-gradient(to bottom, 
-                    rgba(168, 85, 247, 0.1) 1px, transparent 1px, 
-                    transparent 100px);
-            background-size: 100px 100px;
-            
-            /* Apply a large, subtle wave pattern using radial gradients */
-            mask-image: radial-gradient(circle at center, transparent 0, transparent 40%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,1) 100%);
-            
-            animation: wavePan 60s linear infinite;
+            background-color: transparent; /* Particles draw over this */
+            z-index: -2; /* Below content and the main container */
         }
 
-        /* 2. Horizontal movement animation */
-        @keyframes wavePan {
-            from { transform: translateX(0); }
-            to { transform: translateX(-66.666%); } /* Pan exactly 2/3 of its width (100% * 2/3) */
+        /* Ensure content is above particles */
+        .container { 
+            position: relative; /* Make sure content is above particles */
+            z-index: 1; /* Above particles */
+            max-width: 1600px; margin: 0 auto; 
         }
-        
-        /* --- END WAVE BACKGROUND --- */
-
-
-        .container { max-width: 1600px; margin: 0 auto; }
         
         /* Header */
         .header { text-align: center; margin-bottom: 50px; animation: fadeInDown 0.8s ease; }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         .header h1 {
             font-size: 3em; font-weight: 800;
-            /* Cosmic Gradient: Teal -> Purple */
             background: linear-gradient(135deg, #00ADB5 0%, #A855F7 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             margin-bottom: 5px; letter-spacing: -1px;
@@ -72,10 +53,10 @@
 
         /* Glass card effect */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05); /* Slightly lighter base */
+            background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(15px); 
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Clearer glass border */
+            border: 1px solid rgba(255, 255, 255, 0.15); 
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
             padding: 30px; margin-bottom: 25px; transition: all 0.3s ease;
         }
@@ -169,22 +150,17 @@
         }
 
         .input-group input, .input-group select {
-            /* Input Size & Aesthetics */
             width: 100%;
             padding: 14px 18px; 
             font-size: 1.1em; 
             font-weight: 500;
             border-radius: 10px;
-            
-            /* Color and Style */
             background: rgba(255, 255, 255, 0.08); 
             backdrop-filter: blur(5px); 
             border: 1px solid rgba(255, 255, 255, 0.2); 
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); 
             color: #E0E0E0; 
             transition: all 0.3s ease;
-            
-            /* Sizing Fixes */
             max-width: 300px; 
             min-width: 150px;
         }
@@ -273,21 +249,17 @@
     </style>
 </head>
 <body>
-    <!-- The animated wave background layer is here -->
-    <div class="wave-background"></div>
+    <div id="particles-js"></div>
     
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
             <h1>📡 Remote Sensing using Software Defined Radio</h1>
             <p class="subtitle">Disaster Detection System for Hazardous Environments</p>
         </div>
 
-        <!-- CORRECTED SETUP GUIDE ALLOCATION -->
         <div class="setup-guide glass-card">
             <h3>🚀 System Setup Guide</h3>
             <div class="setup-steps">
-                <!-- Card 1: Laptop 1 - Transmitter -->
                 <div class="step-card">
                     <h4>💻 Laptop 1 - Transmitter (Hotspot)</h4>
                     <ol>
@@ -297,7 +269,6 @@
                         <li>**Position:** Place this laptop across the area you intend to monitor (the "Trip Wire").</li>
                     </ol>
                 </div>
-                <!-- Card 2: Laptop 2 - Monitor -->
                 <div class="step-card">
                     <h4>📡 Laptop 2 - Monitor (Receiver & Analyzer)</h4>
                     <ol>
@@ -310,18 +281,14 @@
             </div>
         </div>
 
-        <!-- CONNECTION STATUS -->
         <div id="connectionStatus" class="connection-status disconnected glass-card">
             <span class="status-dot"></span>
             <span>System Ready - Configure & Start</span>
         </div>
         
-        <!-- --- STATS AND QUADS LAYOUT --- -->
-        
         <div class="glass-card">
              <h3 class="chart-title">📊 Multi-Channel SDR Analysis</h3>
             
-            <!-- GLOBAL STATS ROW -->
             <div class="stats-grid-row">
                 <div class="stat-box">
                     <div class="stat-label">MAX ST. DEVIATION (σ)</div>
@@ -341,10 +308,8 @@
                 </div>
             </div>
             
-            <!-- QUAD CHART GRID -->
             <div class="quad-chart-grid">
                 
-                <!-- Chart 1: WiFi Channel 1 (2412 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -356,7 +321,6 @@
                     <div class="chart-container"><canvas id="rssiChart1"></canvas></div>
                 </div>
                 
-                <!-- Chart 2: WiFi Channel 6 (2437 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -368,7 +332,6 @@
                     <div class="chart-container"><canvas id="rssiChart2"></canvas></div>
                 </div>
                 
-                <!-- Chart 3: WiFi Channel 11 (2462 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -380,7 +343,6 @@
                     <div class="chart-container"><canvas id="rssiChart3"></canvas></div>
                 </div>
                 
-                <!-- Chart 4: Custom SDR Channel (433 MHz or other) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -396,11 +358,9 @@
             
         </div>
         
-        <!-- CONTROLS AND LOGS - ENHANCED UX -->
         <div class="glass-card controls-section">
             <h3>⚙ Control Center</h3>
             
-            <!-- Buttons -->
             <div class="button-grid">
                 <button class="btn-primary" id="startBtn" onclick="startMonitoring()">
                     🚀 START MONITORING
@@ -416,7 +376,6 @@
                 </button>
             </div>
 
-            <!-- Inputs (Polished) -->
             <div class="input-grid">
                 <div class="input-group">
                     <label for="ssidName">📡 Signal Transmitter Name (SSID)</label>
@@ -439,7 +398,6 @@
                 </div>
             </div>
 
-            <!-- Log Console with Header -->
             <div class="log-console-group">
                  <div class="log-console-header">📜 System Console Log</div>
                  <div class="log-container" id="logContainer">
@@ -452,7 +410,114 @@
     </div>
 
     <script>
-        // --- MULTI-CHANNEL DATA STRUCTURE ---
+        // --- PARTICLES.JS INITIALIZATION ---
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": ["#00ADB5", "#A855F7", "#059669"] /* Teal, Purple, Green */
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#00ADB5", /* Teal lines */
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab" /* Particles link on hover */
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push" /* New particles on click */
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // --- MULTI-CHANNEL DATA STRUCTURE (Existing Logic Below) ---
         let channelData = {
             1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10 },
             2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10 },
@@ -544,200 +609,4 @@
             let rssi = channel.baseline + bias + (Math.random() - 0.5) * 3;
             
             if (Math.random() > 0.95 && channelIndex === 1) {
-                rssi -= 10 + Math.random() * 15;
-            } else if (Math.random() > 0.98) {
-                rssi -= 5 + Math.random() * 5;
-            }
-            
-            return rssi; 
-        }
-        
-        async function addDataPoint() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            timeLabels.push(timeStr);
-            sampleCount++;
-            
-            let totalRssi = 0;
-            let maxStdDev = 0;
-
-            for (const key in channelData) {
-                const channel = channelData[key];
-                const rssi = await getRSSI(key); 
-                
-                channel.data.push(rssi);
-                totalRssi += rssi;
-                
-                if (channel.data.length > maxDataPoints) {
-                    channel.data.shift();
-                }
-
-                // Update chart labels/data
-                channel.chart.data.labels = timeLabels;
-                channel.chart.update('none');
-
-                const stdDev = detectMotion(key);
-                document.getElementById(channel.valueId).textContent = `${rssi.toFixed(1)} dBm`;
-                
-                if (stdDev > maxStdDev) maxStdDev = stdDev;
-            }
-            
-            if (timeLabels.length > maxDataPoints) {
-                timeLabels.shift();
-            }
-
-            document.getElementById('sampleCount').textContent = sampleCount;
-            document.getElementById('avgRssi').textContent = `${(totalRssi / 4).toFixed(1)} dBm`;
-            document.getElementById('maxStdDev').textContent = maxStdDev.toFixed(2);
-        }
-        
-        function detectMotion(channelKey) {
-            const channel = channelData[channelKey];
-            const windowSize = parseInt(document.getElementById('windowSize').value);
-            const threshold = parseFloat(document.getElementById('threshold').value);
-            
-            if (channel.data.length < windowSize) return 0;
-            
-            const recentData = channel.data.slice(-windowSize);
-            const mean = recentData.reduce((a, b) => a + b) / recentData.length;
-            const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
-            const stdDev = Math.sqrt(variance); 
-            
-            const recentDrop = mean - channel.data[channel.data.length - 1];
-            
-            const isMotion = (stdDev > threshold) || (recentDrop > threshold * 1.5);
-
-            const alertIndicator = document.getElementById(channel.alertId);
-            
-            if (isMotion) {
-                alertIndicator.classList.remove('inactive');
-                alertIndicator.classList.add('active');
-                alertIndicator.textContent = 'ALERT!';
-                
-                if (alertIndicator.dataset.wasActive !== 'true') {
-                    motionCount++;
-                    document.getElementById('motionCount').textContent = motionCount;
-                    addLog(`[${channel.freq} MHz] ALERT! Std Dev: ${stdDev.toFixed(2)} > Threshold: ${threshold}`, 'error');
-                }
-                alertIndicator.dataset.wasActive = 'true';
-            } else {
-                alertIndicator.classList.remove('active');
-                alertIndicator.classList.add('inactive');
-                alertIndicator.textContent = 'NO MOTION';
-                alertIndicator.dataset.wasActive = 'false';
-            }
-            
-            return stdDev;
-        }
-        
-        // --- CONTROL FUNCTIONS (Start/Stop/Reset/Calibrate) ---
-
-        function updateConnectionStatus(status) {
-            const statusEl = document.getElementById('connectionStatus');
-            const statusText = statusEl.querySelector('span:last-child');
-            statusEl.className = 'connection-status glass-card ' + status;
-            
-            if (status === 'connected') {
-                statusText.textContent = 'Connected & Monitoring Active';
-            } else if (status === 'connecting') {
-                statusText.textContent = 'Attempting Connection...';
-            } else {
-                statusText.textContent = 'System Ready - Configure & Start';
-            }
-        }
-        
-        async function startMonitoring() {
-            const ssid = document.getElementById('ssidName').value.trim();
-            
-            if (!ssid) { addLog('Please enter Signal Transmitter Name (SSID)!', 'error'); return; }
-            stopMonitoring();
-            
-            addLog(`Starting multi-channel monitoring...`, 'info');
-            updateConnectionStatus('connecting');
-            
-            setTimeout(() => {
-                updateConnectionStatus('connected');
-                addLog(`Monitoring started! Observing 4 channels.`, 'success');
-                
-                const updateRate = parseInt(document.getElementById('updateRate').value);
-                
-                monitoringInterval = setInterval(addDataPoint, updateRate);
-                
-                document.getElementById('startBtn').disabled = true;
-            }, 1500); 
-        }
-        
-        function stopMonitoring() {
-            if (monitoringInterval) {
-                clearInterval(monitoringInterval);
-                monitoringInterval = null;
-            }
-            updateConnectionStatus('disconnected');
-            document.getElementById('startBtn').disabled = false;
-            addLog('Monitoring stopped by user.', 'warning');
-        }
-        
-        function resetData() {
-            stopMonitoring();
-            
-            Object.keys(channelData).forEach(key => {
-                channelData[key].data = [];
-                channelData[key].chart.update();
-                document.getElementById(channelData[key].valueId).textContent = '-- dBm';
-                document.getElementById(channelData[key].alertId).classList.remove('active');
-                document.getElementById(channelData[key].alertId).classList.add('inactive');
-                document.getElementById(channelData[key].alertId).textContent = 'NO MOTION';
-                document.getElementById(channelData[key].alertId).dataset.wasActive = 'false';
-                channelData[key].baseline = -45 - Math.random() * 10;
-            });
-
-            timeLabels = [];
-            sampleCount = 0;
-            motionCount = 0;
-            
-            document.getElementById('maxStdDev').textContent = '--';
-            document.getElementById('avgRssi').textContent = '--';
-            document.getElementById('sampleCount').textContent = '0';
-            document.getElementById('motionCount').textContent = '0';
-            
-            addLog('System reset - all data cleared', 'info');
-        }
-
-        function calibrate() {
-            addLog('Calibrating baseline for all channels... Keep hands clear!', 'warning');
-            isCalibrating = true;
-            
-            setTimeout(() => {
-                Object.keys(channelData).forEach(key => {
-                    const channel = channelData[key];
-                    const recent = channel.data.slice(-10);
-                    if (recent.length > 0) {
-                        const newBaseline = recent.reduce((a, b) => a + b) / recent.length;
-                        channel.baseline = newBaseline;
-                    }
-                });
-                addLog('✅ Calibration complete! New baselines set.', 'success');
-                isCalibrating = false;
-            }, 2500);
-        }
-
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === ' ') { e.preventDefault(); if (monitoringInterval) { stopMonitoring(); } else { startMonitoring(); } }
-            if (e.ctrlKey && e.key === 'r') { e.preventDefault(); resetData(); }
-        });
-
-        // Auto-adjust chart on window resize
-        window.addEventListener('resize', () => {
-            Object.keys(channelData).forEach(key => channelData[key].chart.resize());
-        });
-
-        // Welcome message
-        setTimeout(() => {
-            addLog('Pro Tip: Use Ctrl+Space to start/stop quickly', 'info');
-        }, 2000);
-    </script>
-</body>
-</html>
+                rss
