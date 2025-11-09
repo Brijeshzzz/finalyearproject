@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📡 Multi-Channel SDR System - Cosmic</title>
+    <title>📡 Multi-Channel SDR System - Animated</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
@@ -13,34 +13,49 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0A0A1F; /* Deep Space Black */
-            color: #E0E0E0; /* Light Gray Text */
+            background: #121827; /* Deep Tech Blue */
+            color: #E0E0E0;
             min-height: 100vh;
             padding: 20px;
             overflow-x: hidden;
         }
 
-        /* Animated background (Teal, Purple, Green Nebula) */
-        body::before {
+        /* --- NEW WAVE BACKGROUND ANIMATION --- */
+        
+        /* 1. The main animated element */
+        .wave-background {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 10% 80%, rgba(0, 173, 181, 0.25), transparent 50%), /* Teal */
-                radial-gradient(circle at 90% 20%, rgba(168, 85, 247, 0.25), transparent 50%), /* Purple */
-                radial-gradient(circle at 40% 50%, rgba(5, 150, 105, 0.25), transparent 50%); /* Green */
-            animation: gradientShift 20s ease infinite;
+            width: 300%; /* Wider than screen for seamless looping */
+            height: 100vh;
             z-index: -1;
+            /* Create the repeated horizontal line pattern */
+            background: 
+                linear-gradient(to right, 
+                    rgba(0, 173, 181, 0.1) 1px, transparent 1px, 
+                    transparent 100px),
+                linear-gradient(to bottom, 
+                    rgba(168, 85, 247, 0.1) 1px, transparent 1px, 
+                    transparent 100px);
+            background-size: 100px 100px;
+            
+            /* Apply a large, subtle wave pattern using radial gradients */
+            mask-image: radial-gradient(circle at center, transparent 0, transparent 40%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,1) 100%);
+            
+            animation: wavePan 60s linear infinite;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
+        /* 2. Horizontal movement animation */
+        @keyframes wavePan {
+            from { transform: translateX(0); }
+            to { transform: translateX(-66.666%); } /* Pan exactly 2/3 of its width (100% * 2/3) */
         }
         
+        /* --- END WAVE BACKGROUND --- */
+
+
         .container { max-width: 1600px; margin: 0 auto; }
         
         /* Header */
@@ -57,10 +72,10 @@
 
         /* Glass card effect */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03); 
+            background: rgba(255, 255, 255, 0.05); /* Slightly lighter base */
             backdrop-filter: blur(15px); 
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Clearer glass border */
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
             padding: 30px; margin-bottom: 25px; transition: all 0.3s ease;
         }
@@ -161,22 +176,22 @@
             font-weight: 500;
             border-radius: 10px;
             
-            /* Color and Style - KEY CHANGES HERE */
-            background: rgba(255, 255, 255, 0.08); /* Lighter, translucent background */
-            backdrop-filter: blur(5px); /* Added blur effect for glass look */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Clearer border */
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle inner shadow for depth */
+            /* Color and Style */
+            background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(5px); 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); 
             color: #E0E0E0; 
             transition: all 0.3s ease;
             
             /* Sizing Fixes */
-            max-width: 300px; /* Limit max width for better proportion on wide screens */
+            max-width: 300px; 
             min-width: 150px;
         }
         
         @media (max-width: 768px) {
             .input-group input, .input-group select {
-                max-width: 100%; /* Full width on smaller screens */
+                max-width: 100%; 
             }
         }
         
@@ -258,15 +273,21 @@
     </style>
 </head>
 <body>
+    <!-- The animated wave background layer is here -->
+    <div class="wave-background"></div>
+    
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
             <h1>📡 Remote Sensing using Software Defined Radio</h1>
             <p class="subtitle">Disaster Detection System for Hazardous Environments</p>
         </div>
 
+        <!-- CORRECTED SETUP GUIDE ALLOCATION -->
         <div class="setup-guide glass-card">
             <h3>🚀 System Setup Guide</h3>
             <div class="setup-steps">
+                <!-- Card 1: Laptop 1 - Transmitter -->
                 <div class="step-card">
                     <h4>💻 Laptop 1 - Transmitter (Hotspot)</h4>
                     <ol>
@@ -276,6 +297,7 @@
                         <li>**Position:** Place this laptop across the area you intend to monitor (the "Trip Wire").</li>
                     </ol>
                 </div>
+                <!-- Card 2: Laptop 2 - Monitor -->
                 <div class="step-card">
                     <h4>📡 Laptop 2 - Monitor (Receiver & Analyzer)</h4>
                     <ol>
@@ -288,14 +310,18 @@
             </div>
         </div>
 
+        <!-- CONNECTION STATUS -->
         <div id="connectionStatus" class="connection-status disconnected glass-card">
             <span class="status-dot"></span>
             <span>System Ready - Configure & Start</span>
         </div>
         
+        <!-- --- STATS AND QUADS LAYOUT --- -->
+        
         <div class="glass-card">
              <h3 class="chart-title">📊 Multi-Channel SDR Analysis</h3>
             
+            <!-- GLOBAL STATS ROW -->
             <div class="stats-grid-row">
                 <div class="stat-box">
                     <div class="stat-label">MAX ST. DEVIATION (σ)</div>
@@ -315,8 +341,10 @@
                 </div>
             </div>
             
+            <!-- QUAD CHART GRID -->
             <div class="quad-chart-grid">
                 
+                <!-- Chart 1: WiFi Channel 1 (2412 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -328,6 +356,7 @@
                     <div class="chart-container"><canvas id="rssiChart1"></canvas></div>
                 </div>
                 
+                <!-- Chart 2: WiFi Channel 6 (2437 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -339,6 +368,7 @@
                     <div class="chart-container"><canvas id="rssiChart2"></canvas></div>
                 </div>
                 
+                <!-- Chart 3: WiFi Channel 11 (2462 MHz) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -350,6 +380,7 @@
                     <div class="chart-container"><canvas id="rssiChart3"></canvas></div>
                 </div>
                 
+                <!-- Chart 4: Custom SDR Channel (433 MHz or other) -->
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
@@ -365,9 +396,11 @@
             
         </div>
         
+        <!-- CONTROLS AND LOGS - ENHANCED UX -->
         <div class="glass-card controls-section">
             <h3>⚙ Control Center</h3>
             
+            <!-- Buttons -->
             <div class="button-grid">
                 <button class="btn-primary" id="startBtn" onclick="startMonitoring()">
                     🚀 START MONITORING
@@ -383,6 +416,7 @@
                 </button>
             </div>
 
+            <!-- Inputs (Polished) -->
             <div class="input-grid">
                 <div class="input-group">
                     <label for="ssidName">📡 Signal Transmitter Name (SSID)</label>
@@ -405,6 +439,7 @@
                 </div>
             </div>
 
+            <!-- Log Console with Header -->
             <div class="log-console-group">
                  <div class="log-console-header">📜 System Console Log</div>
                  <div class="log-container" id="logContainer">
@@ -439,7 +474,6 @@
             return new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: timeLabels,
                     datasets: [{
                         data: data,
                         borderColor: color,
@@ -539,6 +573,7 @@
                     channel.data.shift();
                 }
 
+                // Update chart labels/data
                 channel.chart.data.labels = timeLabels;
                 channel.chart.update('none');
 
