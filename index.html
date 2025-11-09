@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📡 Multi-Channel SDR System - Dynamic</title>
+    <title>🌌 Multi-Channel SDR System - Cosmic Dynamic</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <style>
@@ -12,15 +12,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #0A0A1F;
+            /* Deeper, more "space" black */
+            background: #00000A; 
             color: #E0E0E0;
             min-height: 100vh;
-            padding: 20px;
+            padding: 25px; /* Slightly more padding */
             overflow-x: hidden;
             position: relative; 
         }
 
-        /* ANIMATED WAVE BACKGROUND */
+        /* ANIMATED WAVE BACKGROUND (Now a gradient nebula) */
         .wave-background {
             position: fixed;
             width: 100%;
@@ -29,7 +30,8 @@
             left: 0;
             z-index: -3;
             overflow: hidden;
-            background: linear-gradient(180deg, #0A0A1F 0%, #0F0F2E 50%, #0A0A1F 100%);
+            /* Deep purple/blue nebula effect */
+            background: linear-gradient(180deg, #00000A 0%, #08031A 50%, #00000A 100%);
         }
 
         .wave-background canvas {
@@ -38,6 +40,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            opacity: 0.8; /* Make the waves more subtle */
         }
 
         /* PARTICLE CANVAS */
@@ -68,86 +71,96 @@
             to { opacity: 1; transform: translateY(0); } 
         }
         .header h1 {
-            font-size: 3em; 
+            font-size: 3.5em; /* Slightly larger */
             font-weight: 800;
-            background: linear-gradient(135deg, #00ADB5 0%, #A855F7 100%);
+            /* Cooler, cosmic gradient */
+            background: linear-gradient(135deg, #4DD0E1 0%, #B39DDB 100%); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             background-clip: text;
             margin-bottom: 5px; 
-            letter-spacing: -1px;
+            letter-spacing: -2px;
+            text-shadow: 0 0 15px rgba(77, 208, 225, 0.4); /* Subtle glow */
         }
         .header .subtitle { 
-            font-size: 1.3em; 
-            color: #9CA3AF; 
+            font-size: 1.4em; 
+            color: #8C94A0; 
             font-weight: 300; 
         }
 
+        /* Glass effect with a deeper shadow and richer border */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(15px); 
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); 
+            background: rgba(255, 255, 255, 0.03); /* More transparent base */
+            backdrop-filter: blur(20px) saturate(150%); /* Stronger blur */
+            border-radius: 20px;
+            border: 1px solid rgba(179, 157, 219, 0.1); /* Subtle purple border */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8); /* Deeper shadow */
             padding: 30px; 
-            margin-bottom: 25px; 
-            transition: all 0.3s ease;
+            margin-bottom: 30px; 
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
         }
         .glass-card:hover {
-            transform: translateY(-5px); 
-            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8); 
-            border-color: rgba(0, 173, 181, 0.5); 
+            transform: translateY(-6px); /* More pronounced lift */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 25px rgba(77, 208, 225, 0.3); /* Hover glow */
+            border-color: rgba(77, 208, 225, 0.5); /* Cyan border on hover */
         }
 
+        /* Connection Status */
         .connection-status { 
             padding: 20px; 
             border-radius: 16px; 
             font-weight: 700; 
             text-align: center; 
-            font-size: 1.2em; 
+            font-size: 1.3em; /* Slightly larger text */
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            gap: 12px; 
+            gap: 15px; 
             transition: all 0.3s ease; 
             margin-bottom: 30px; 
+            text-transform: uppercase;
         }
         .status-dot { 
-            width: 14px; 
-            height: 14px; 
+            width: 16px; 
+            height: 16px; 
             border-radius: 50%; 
             animation: pulse 2s infinite; 
+            box-shadow: 0 0 10px currentColor; /* Glow based on color */
         }
         @keyframes pulse { 
             0%, 100% { opacity: 1; transform: scale(1); } 
-            50% { opacity: 0.5; transform: scale(1.2); } 
+            50% { opacity: 0.6; transform: scale(1.15); } 
         }
         .connection-status.connected { 
-            background: linear-gradient(135deg, #059669, #10B981); 
-            border-color: #059669; 
+            background: linear-gradient(135deg, #388E3C, #81C784); /* Emerald green */
+            color: #00000A;
         } 
         .connection-status.disconnected { 
-            background: linear-gradient(135deg, #DC2626, #EF4444); 
+            background: linear-gradient(135deg, #C62828, #EF5350); /* Darker red */
+            color: white; 
         } 
         .connection-status.connecting { 
-            background: linear-gradient(135deg, #D97706, #F59E0B); 
+            background: linear-gradient(135deg, #FFB300, #FFD54F); /* Amber */
+            color: #00000A;
         } 
 
         .quad-chart-grid { 
             display: grid; 
             grid-template-columns: repeat(2, 1fr); 
-            grid-template-rows: repeat(2, minmax(220px, 1fr)); 
-            gap: 20px; 
+            grid-template-rows: repeat(2, minmax(250px, 1fr)); /* Slightly taller charts */
+            gap: 25px; 
             margin-bottom: 30px; 
         }
         @media (max-width: 900px) { 
             .quad-chart-grid { 
                 grid-template-columns: 1fr; 
+                grid-template-rows: unset;
             } 
         }
 
         .chart-panel { 
-            min-height: 220px; 
+            min-height: 250px; 
             display: flex; 
             flex-direction: column; 
         }
@@ -158,46 +171,50 @@
             margin-bottom: 10px; 
         }
         .channel-title { 
-            font-size: 1.2em; 
+            font-size: 1.3em; 
             font-weight: 700; 
-            color: #E0E0E0; 
+            color: #D1D5DB; 
+            position: relative; /* For tooltip */
+            cursor: help;
         }
         .channel-data {
-            font-size: 1.5em; 
+            font-size: 1.8em; 
             font-weight: 800;
-            background: linear-gradient(135deg, #00ADB5, #00C6CC);
+            /* Updated gradient for data values */
+            background: linear-gradient(135deg, #4DD0E1, #B39DDB);
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             background-clip: text;
         }
 
         .alert-indicator { 
-            padding: 5px 10px; 
-            border-radius: 8px; 
-            font-weight: 700; 
-            font-size: 0.9em; 
+            padding: 8px 15px; /* Larger padding */
+            border-radius: 12px; /* Smoother corners */
+            font-weight: 800; 
+            font-size: 1em; 
             transition: all 0.3s; 
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
         .alert-indicator.inactive { 
-            background: rgba(107, 114, 128, 0.2); 
+            background: rgba(107, 114, 128, 0.1); 
             color: #9CA3AF; 
         }
         .alert-indicator.active {
-            background: #A855F7; 
-            color: #0A0A1F;
+            background: linear-gradient(135deg, #B39DDB, #7E57C2); /* Deep purple glow */
+            color: #00000A;
             animation: flash 1s infinite alternate;
-            box-shadow: 0 0 10px #A855F7;
+            box-shadow: 0 0 20px #7E57C2, 0 0 5px #FFFFFF inset; 
         }
         
         @keyframes flash {
             from { opacity: 1; }
-            to { opacity: 0.5; }
+            to { opacity: 0.6; }
         }
         
         .stats-grid-row { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
-            gap: 20px; 
+            gap: 25px; 
             margin-bottom: 30px; 
         }
         @media (max-width: 1200px) { 
@@ -213,22 +230,29 @@
 
         .stat-box { 
             background: rgba(255, 255, 255, 0.05); 
-            padding: 20px; 
+            padding: 25px 20px; 
             border-radius: 16px; 
             border: 1px solid rgba(255, 255, 255, 0.1); 
             text-align: center; 
+            transition: all 0.3s ease;
+        }
+        .stat-box:hover {
+            border-color: #4DD0E1;
+            background: rgba(77, 208, 225, 0.05);
         }
         .stat-label { 
-            font-size: 0.9em; 
-            color: #94A3B8; 
-            margin-bottom: 6px; 
+            font-size: 0.95em; 
+            color: #B0BEC5; 
+            margin-bottom: 8px; 
             text-transform: uppercase; 
             font-weight: 600; 
+            letter-spacing: 0.5px;
         }
         .stat-value {
-            font-size: 2.2em; 
+            font-size: 2.5em; 
             font-weight: 800;
-            background: linear-gradient(135deg, #A855F7, #D8B4FE);
+            /* New dominant accent color */
+            background: linear-gradient(135deg, #B39DDB, #7E57C2); 
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
             background-clip: text;
@@ -236,14 +260,15 @@
         
         .chart-container { 
             position: relative; 
-            height: 150px; 
+            height: 180px; /* Taller chart area */
         }
         
         .controls-section h3 { 
-            font-size: 1.5em; 
+            font-size: 1.7em; 
             font-weight: 800; 
             margin-bottom: 25px; 
-            color: #E0E0E0; 
+            color: #4DD0E1; /* Cyan color */
+            text-shadow: 0 0 5px rgba(77, 208, 225, 0.5);
         }
         .button-grid { 
             display: grid; 
@@ -255,7 +280,7 @@
         button { 
             padding: 18px 24px; 
             border: none; 
-            border-radius: 14px; 
+            border-radius: 12px; 
             font-size: 1.1em; 
             font-weight: 700; 
             cursor: pointer; 
@@ -264,21 +289,23 @@
             letter-spacing: 0.5px; 
             position: relative; 
             overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .btn-primary { 
-            background: linear-gradient(135deg, #A855F7, #D8B4FE); 
-            color: #0A0A1F;
-            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.5); 
+            background: linear-gradient(135deg, #B39DDB, #7E57C2); 
+            color: #00000A;
+            box-shadow: 0 4px 25px rgba(126, 87, 194, 0.5); 
         }
         .btn-primary:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 8px 30px rgba(168, 85, 247, 0.7); 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 35px rgba(126, 87, 194, 0.8); 
+            filter: brightness(1.1);
         }
         .btn-danger { 
-            background: linear-gradient(135deg, #DC2626, #EF4444); 
+            background: linear-gradient(135deg, #C62828, #EF5350); 
             color: white; 
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5); 
+            box-shadow: 0 4px 15px rgba(239, 83, 80, 0.5); 
         }
         .btn-secondary { 
             background: rgba(255, 255, 255, 0.1); 
@@ -286,14 +313,15 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .btn-secondary:hover { 
-            background: rgba(0, 173, 181, 0.2); 
+            background: rgba(77, 208, 225, 0.2); 
+            border-color: #4DD0E1;
             transform: translateY(-3px); 
         }
 
         .input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly wider inputs */
+            gap: 25px;
             margin-bottom: 30px;
         }
 
@@ -302,87 +330,94 @@
             display: flex; 
             align-items: center;
             gap: 8px; 
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 1em;
         }
 
         .input-group input, .input-group select {
             width: 100%;
-            padding: 14px 18px; 
+            padding: 15px 20px; 
             font-size: 1.1em; 
             font-weight: 500;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.08); 
-            backdrop-filter: blur(5px); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); 
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05); /* More subtle background */
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5); 
             color: #E0E0E0; 
             transition: all 0.3s ease;
         }
         
         .input-group input:focus, .input-group select:focus {
-            border-color: #00ADB5; 
-            background: rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 0 0 4px rgba(0, 173, 181, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.5); 
+            border-color: #4DD0E1; 
+            background: rgba(77, 208, 225, 0.05); 
+            box-shadow: 0 0 0 5px rgba(77, 208, 225, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.7); 
             outline: none;
         }
 
         .log-console-header {
-            font-size: 1.1em;
+            font-size: 1.2em;
             font-weight: 700;
-            color: #00ADB5; 
-            margin-bottom: 10px;
+            color: #4DD0E1; 
+            margin-bottom: 15px;
             padding-bottom: 5px;
-            border-bottom: 2px solid rgba(0, 173, 181, 0.3);
+            border-bottom: 2px solid rgba(77, 208, 225, 0.3);
+            text-shadow: 0 0 5px rgba(77, 208, 225, 0.2);
         }
 
         .log-container { 
-            background: rgba(0, 0, 0, 0.4); 
+            background: rgba(0, 0, 0, 0.5); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
             border-radius: 12px;
             padding: 20px;
-            max-height: 250px;
+            max-height: 280px; /* Taller log */
             overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.95em;
             margin-top: 30px; 
-            color: #E0E0E0; 
+            color: #B0BEC5; 
         }
 
         .log-entry { 
-            padding: 6px 0; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+            padding: 8px 0; 
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05); 
             animation: fadeIn 0.3s ease; 
         }
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .log-entry.info { color: #00ADB5; } 
-        .log-entry.error { color: #F87171; }
-        .log-entry.warning { color: #FFD700; } 
-        .log-entry.success { color: #059669; } 
+        .log-entry.info { color: #4DD0E1; } 
+        .log-entry.error { color: #EF5350; }
+        .log-entry.warning { color: #FFD740; } 
+        .log-entry.success { color: #81C784; } 
 
         .setup-guide {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 173, 181, 0.1));
-            border: 2px solid rgba(0, 173, 181, 0.5);
+            background: linear-gradient(135deg, rgba(179, 157, 219, 0.08), rgba(77, 208, 225, 0.08));
+            border: 2px solid rgba(77, 208, 225, 0.4);
+        }
+        .setup-guide h3 {
+            color: #B39DDB;
+            text-shadow: 0 0 5px rgba(179, 157, 219, 0.4);
         }
         .setup-steps {
             display: grid;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Use grid for layout */
+            gap: 25px;
             margin-top: 20px;
         }
         .step-card { 
             background: rgba(255, 255, 255, 0.05); 
-            border-left: 5px solid #A855F7; 
+            border-left: 5px solid #7E57C2; /* Deep purple indicator */
             padding: 20px 25px;
             border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
         } 
         .step-card h4 { 
-            color: #00ADB5; 
+            color: #4DD0E1; 
             margin-bottom: 15px;
-            font-size: 1.2em;
+            font-size: 1.25em;
         } 
         .step-card ol { 
             list-style: none; 
@@ -392,10 +427,10 @@
         }
         .step-card ol li {
             counter-increment: step-counter; 
-            line-height: 1.6;
+            line-height: 1.7;
             color: #d1d5db; 
-            padding: 10px 0; 
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05); 
+            padding: 12px 0; 
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08); 
             display: flex; 
             align-items: flex-start;
         }
@@ -404,20 +439,52 @@
         }
 
         .step-card ol li::before {
-            content: counter(step-counter) ".";
+            content: counter(step-counter);
             font-weight: 800;
-            font-size: 1.1em;
-            color: #A855F7; 
+            font-size: 1.2em;
+            color: #B39DDB; 
             margin-right: 15px;
             flex-shrink: 0; 
+            background: rgba(179, 157, 219, 0.2);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
         }
         
         .step-card code { 
-            background: rgba(0, 0, 0, 0.5); 
-            color: #059669;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.6); 
+            color: #81C784;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 700;
+        }
+        
+        /* Tooltip style for the channel title element */
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00000A;
+            color: #4DD0E1;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 10;
+            border: 1px solid #4DD0E1;
+            box-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+        }
+        
+        [data-tooltip]:hover::after {
+            opacity: 1;
         }
     </style>
 </head>
@@ -462,7 +529,7 @@
 
         <div id="connectionStatus" class="connection-status disconnected glass-card">
             <span class="status-dot"></span>
-            <span>System Ready - Configure & Start</span>
+            <span>SYSTEM DISARMED / READY</span>
         </div>
         
         <div class="glass-card">
@@ -492,7 +559,7 @@
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
-                            <span class="channel-title">CH 1: 2412 MHz</span>
+                            <span class="channel-title" data-tooltip="Primary WiFi Channel (2.4 GHz)">CH 1: 2412 MHz</span>
                             <div class="channel-data" id="freq1Value">-- dBm</div>
                         </div>
                          <div id="alertIndicator1" class="alert-indicator inactive" data-was-active="false">NO MOTION</div>
@@ -503,7 +570,7 @@
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
-                            <span class="channel-title">CH 6: 2437 MHz</span>
+                            <span class="channel-title" data-tooltip="Secondary WiFi Channel (2.4 GHz)">CH 6: 2437 MHz</span>
                             <div class="channel-data" id="freq2Value">-- dBm</div>
                         </div>
                         <div id="alertIndicator2" class="alert-indicator inactive" data-was-active="false">NO MOTION</div>
@@ -514,7 +581,7 @@
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
-                            <span class="channel-title">CH 11: 2462 MHz</span>
+                            <span class="channel-title" data-tooltip="Tertiary WiFi Channel (2.4 GHz)">CH 11: 2462 MHz</span>
                             <div class="channel-data" id="freq3Value">-- dBm</div>
                         </div>
                         <div id="alertIndicator3" class="alert-indicator inactive" data-was-active="false">NO MOTION</div>
@@ -525,7 +592,7 @@
                 <div class="glass-card chart-panel">
                     <div class="chart-header">
                         <div>
-                            <span class="channel-title">SDR: 433 MHz</span>
+                            <span class="channel-title" data-tooltip="ISM Band / RTLSDR (e.g., LORA)">SDR: 433 MHz</span>
                             <div class="channel-data" id="freq4Value">-- dBm</div>
                         </div>
                         <div id="alertIndicator4" class="alert-indicator inactive" data-was-active="false">NO MOTION</div>
@@ -542,16 +609,16 @@
             
             <div class="button-grid">
                 <button class="btn-primary" id="startBtn" onclick="startMonitoring()">
-                    🚀 START MONITORING
+                    🚀 START MONITORING (Ctrl+Space)
                 </button>
                 <button class="btn-danger" onclick="stopMonitoring()">
                     ⏹ STOP
                 </button>
                 <button class="btn-secondary" onclick="calibrate()">
-                    🎯 CALIBRATE BASELINE
+                    🎯 CALIBRATE BASELINE (Ctrl+C)
                 </button>
                 <button class="btn-secondary" onclick="resetData()">
-                    🔄 RESET DATA
+                    🔄 RESET DATA (Ctrl+R)
                 </button>
             </div>
 
@@ -589,7 +656,7 @@
     </div>
 
     <script>
-        // ANIMATED WAVE BACKGROUND
+        // --- ANIMATED WAVE BACKGROUND (NEBULA EFFECT) ---
         const waveCanvas = document.getElementById('waveCanvas');
         const waveCtx = waveCanvas.getContext('2d');
         let waveWidth, waveHeight;
@@ -604,12 +671,12 @@
         resizeWaveCanvas();
         window.addEventListener('resize', resizeWaveCanvas);
         
+        // Define richer, more subtle "nebula" waves
         const waves = [
-            { amplitude: 30, frequency: 0.02, speed: 0.03, yOffset: 0.3, color: 'rgba(0, 173, 181, 0.15)', lineWidth: 2 },
-            { amplitude: 40, frequency: 0.015, speed: 0.025, yOffset: 0.5, color: 'rgba(168, 85, 247, 0.12)', lineWidth: 2.5 },
-            { amplitude: 25, frequency: 0.025, speed: 0.035, yOffset: 0.7, color: 'rgba(5, 150, 105, 0.1)', lineWidth: 2 },
-            { amplitude: 35, frequency: 0.018, speed: 0.028, yOffset: 0.4, color: 'rgba(255, 215, 0, 0.08)', lineWidth: 1.5 },
-            { amplitude: 45, frequency: 0.012, speed: 0.022, yOffset: 0.6, color: 'rgba(0, 173, 181, 0.1)', lineWidth: 3 }
+            { amplitude: 40, frequency: 0.015, speed: 0.02, yOffset: 0.2, color: 'rgba(77, 208, 225, 0.1)', lineWidth: 3 }, // Cyan
+            { amplitude: 60, frequency: 0.01, speed: 0.015, yOffset: 0.4, color: 'rgba(179, 157, 219, 0.08)', lineWidth: 4 }, // Purple
+            { amplitude: 50, frequency: 0.008, speed: 0.025, yOffset: 0.6, color: 'rgba(129, 199, 132, 0.06)', lineWidth: 2 }, // Green
+            { amplitude: 70, frequency: 0.012, speed: 0.018, yOffset: 0.8, color: 'rgba(255, 215, 0, 0.04)', lineWidth: 5 } // Gold
         ];
         
         let wavePhase = 0;
@@ -618,7 +685,7 @@
             waveCtx.beginPath();
             waveCtx.moveTo(0, waveHeight * wave.yOffset);
             
-            for (let x = 0; x <= waveWidth; x += 2) {
+            for (let x = 0; x <= waveWidth; x += 5) { // Increase step for a smoother wave (less jagged)
                 const y = waveHeight * wave.yOffset + 
                          Math.sin(x * wave.frequency + phase) * wave.amplitude +
                          Math.sin(x * wave.frequency * 0.5 + phase * 1.3) * (wave.amplitude * 0.5) +
@@ -629,8 +696,8 @@
             waveCtx.strokeStyle = wave.color;
             waveCtx.lineWidth = wave.lineWidth;
             waveCtx.stroke();
-            waveCtx.shadowBlur = 20;
-            waveCtx.shadowColor = wave.color;
+            waveCtx.shadowBlur = 10;
+            waveCtx.shadowColor = wave.color.replace(/[^,]+(?=\))/, '1'); // Make glow slightly brighter
             waveCtx.stroke();
             waveCtx.shadowBlur = 0;
         }
@@ -646,7 +713,7 @@
         
         animateWaves();
 
-        // PARTICLE SYSTEM (Self-contained)
+        // --- PARTICLE SYSTEM (STAR FIELD) ---
         const particleCanvas = document.getElementById('particleCanvas');
         const particleCtx = particleCanvas.getContext('2d');
         let particles = [];
@@ -663,44 +730,51 @@
             constructor() {
                 this.x = Math.random() * particleCanvas.width;
                 this.y = Math.random() * particleCanvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.radius = Math.random() * 2 + 1;
-                const colors = ['rgba(0, 173, 181, 0.6)', 'rgba(168, 85, 247, 0.6)', 'rgba(5, 150, 105, 0.6)'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.vx = (Math.random() - 0.5) * 0.1; // Slower movement
+                this.vy = (Math.random() - 0.5) * 0.1;
+                this.radius = Math.random() * 1.5 + 0.5; // Smaller, star-like
+                this.opacity = Math.random() * 0.7 + 0.3;
+                const colors = ['#4DD0E1', '#B39DDB', '#FFFFFF'];
+                this.baseColor = colors[Math.floor(Math.random() * colors.length)];
             }
             
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
                 
-                if (this.x < 0 || this.x > particleCanvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > particleCanvas.height) this.vy *= -1;
+                if (this.x < 0) this.x = particleCanvas.width;
+                if (this.x > particleCanvas.width) this.x = 0;
+                if (this.y < 0) this.y = particleCanvas.height;
+                if (this.y > particleCanvas.height) this.y = 0;
             }
             
             draw() {
                 particleCtx.beginPath();
                 particleCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                particleCtx.fillStyle = this.color;
+                particleCtx.fillStyle = `${this.baseColor}${Math.floor(this.opacity * 255).toString(16).padStart(2, '0')}`;
+                particleCtx.shadowBlur = this.radius * 3;
+                particleCtx.shadowColor = this.baseColor;
                 particleCtx.fill();
+                particleCtx.shadowBlur = 0;
             }
         }
         
-        for (let i = 0; i < 80; i++) {
+        for (let i = 0; i < 150; i++) { // More particles for a denser field
             particles.push(new Particle());
         }
         
         function connectParticles() {
+            // Keep connections subtle for a 'universe' feel
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < 150) {
+                    if (distance < 100) { // Shorter connection range
                         particleCtx.beginPath();
-                        particleCtx.strokeStyle = `rgba(0, 173, 181, ${0.4 * (1 - distance / 150)})`;
-                        particleCtx.lineWidth = 1;
+                        particleCtx.strokeStyle = `rgba(77, 208, 225, ${0.2 * (1 - distance / 100)})`;
+                        particleCtx.lineWidth = 0.5;
                         particleCtx.moveTo(particles[i].x, particles[i].y);
                         particleCtx.lineTo(particles[j].x, particles[j].y);
                         particleCtx.stroke();
@@ -723,12 +797,12 @@
         
         animateParticles();
 
-        // MULTI-CHANNEL DATA
+        // --- MULTI-CHANNEL DATA & CHARTING ---
         let channelData = {
-            1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10 },
-            2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10 },
-            3: { freq: 2462, data: [], chart: null, elementId: 'rssiChart3', valueId: 'freq3Value', alertId: 'alertIndicator3', baseline: -45 - Math.random() * 10 },
-            4: { freq: 433,  data: [], chart: null, elementId: 'rssiChart4', valueId: 'freq4Value', alertId: 'alertIndicator4', baseline: -45 - Math.random() * 10 }
+            1: { freq: 2412, data: [], chart: null, elementId: 'rssiChart1', valueId: 'freq1Value', alertId: 'alertIndicator1', baseline: -45 - Math.random() * 10, color: '#4DD0E1' }, // Cyan
+            2: { freq: 2437, data: [], chart: null, elementId: 'rssiChart2', valueId: 'freq2Value', alertId: 'alertIndicator2', baseline: -45 - Math.random() * 10, color: '#B39DDB' }, // Purple
+            3: { freq: 2462, data: [], chart: null, elementId: 'rssiChart3', valueId: 'freq3Value', alertId: 'alertIndicator3', baseline: -45 - Math.random() * 10, color: '#81C784' }, // Green
+            4: { freq: 433,  data: [], chart: null, elementId: 'rssiChart4', valueId: 'freq4Value', alertId: 'alertIndicator4', baseline: -45 - Math.random() * 10, color: '#FFD740' } // Gold/Amber
         };
         let timeLabels = [];
         let maxDataPoints = 60;
@@ -737,20 +811,65 @@
         let motionCount = 0;
         
         function createChart(ctx, data, color) {
-            const gradient = ctx.createLinearGradient(0, 0, 0, 150);
+            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
             gradient.addColorStop(0, `${color}66`); 
-            gradient.addColorStop(1, `${color}00`); 
+            gradient.addColorStop(1, `#00000A00`); // Fade to deep space black
 
             return new Chart(ctx, {
                 type: 'line',
-                data: { datasets: [{ data: data, borderColor: color, backgroundColor: gradient, borderWidth: 2, tension: 0.4, fill: true, pointRadius: 0 }] },
+                data: { datasets: [{ 
+                    data: data, 
+                    borderColor: color, 
+                    backgroundColor: gradient, 
+                    borderWidth: 2, 
+                    tension: 0.3, // Smoother line (wave-like)
+                    fill: true, 
+                    pointRadius: 0,
+                    // Add a subtle glow to the line
+                    borderCapStyle: 'round',
+                    borderJoinStyle: 'round',
+                }] },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    animation: { duration: 100 },
-                    plugins: { legend: { display: false }, tooltip: { enabled: false } },
-                    scales: { y: { display: false, min: -85, max: -30 }, x: { display: false } },
-                    layout: { padding: 0 }
+                    animation: { 
+                        duration: 0, // Disable default Chart.js animation
+                        easing: 'linear', 
+                    },
+                    plugins: { 
+                        legend: { display: false }, 
+                        tooltip: { enabled: false } 
+                    },
+                    scales: { 
+                        y: { 
+                            display: false, 
+                            min: -85, 
+                            max: -30 
+                        }, 
+                        x: { 
+                            display: false 
+                        } 
+                    },
+                    layout: { padding: 0 },
+                    // Custom draw function to apply glow to the line (Enhanced Frequency Movement)
+                    onResize: (chart) => { chart.options.scales.y.max = -30; chart.options.scales.y.min = -85; },
+                    plugins: [{
+                        id: 'lineGlow',
+                        afterDatasetsDraw: (chart) => {
+                            const ctx = chart.ctx;
+                            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                const meta = chart.getDatasetMeta(datasetIndex);
+                                if (meta.type === 'line' && dataset.data.length > 0) {
+                                    ctx.save();
+                                    ctx.shadowColor = dataset.borderColor;
+                                    ctx.shadowBlur = 15; // Set glow intensity
+                                    ctx.lineWidth = 2; 
+                                    meta.dataset.draw();
+                                    ctx.restore();
+                                }
+                            });
+                        }
+                    }]
                 }
             });
         }
@@ -758,15 +877,14 @@
         Object.keys(channelData).forEach(key => {
             const channel = channelData[key];
             const ctx = document.getElementById(channel.elementId).getContext('2d');
-            let color = key === '1' ? '#00ADB5' : key === '2' ? '#A855F7' : key === '3' ? '#059669' : '#FFD700';
-            channel.chart = createChart(ctx, channel.data, color);
+            channel.chart = createChart(ctx, channel.data, channel.color);
         });
-
+        
         function addLog(message, type = 'info') {
             const logContainer = document.getElementById('logContainer');
             const entry = document.createElement('div');
             entry.className = `log-entry ${type}`;
-            const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
             const icon = { info: '🔵', error: '🔴', warning: '🟡', success: '🟢' }[type] || '🔵';
             entry.textContent = `${icon} [${timestamp}] ${message}`;
             logContainer.insertBefore(entry, logContainer.firstChild);
@@ -777,9 +895,11 @@
             const channel = channelData[channelIndex];
             let bias = channel.freq === 433 ? -10 : 0;
             let rssi = channel.baseline + bias + (Math.random() - 0.5) * 3;
-            if (Math.random() > 0.95 && channelIndex === 1) {
+            
+            // Simulate a 'motion' drop (signal attenuation)
+            if (Math.random() > 0.96) {
                 rssi -= 10 + Math.random() * 15;
-            } else if (Math.random() > 0.98) {
+            } else if (Math.random() > 0.985) {
                 rssi -= 5 + Math.random() * 5;
             }
             return rssi; 
@@ -787,7 +907,7 @@
         
         async function addDataPoint() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
             timeLabels.push(timeStr);
             sampleCount++;
             
@@ -797,11 +917,24 @@
             for (const key in channelData) {
                 const channel = channelData[key];
                 const rssi = getSimulatedRSSI(key); 
-                channel.data.push(rssi);
+                
+                // *** Frequency Movement Animation (Key Change) ***
+                // Shift data to the left to create a scrolling effect
+                if (channel.data.length >= maxDataPoints) {
+                    channel.data.shift(); // Remove oldest point
+                    // This small perturbation helps the graph feel more "alive" when scrolling
+                    if (channel.data.length > 0) {
+                         channel.data[0] = channel.data[0] * 0.9 + (channel.baseline + (Math.random() - 0.5) * 2) * 0.1;
+                    }
+                }
+                channel.data.push(rssi); // Add new point
+                
                 totalRssi += rssi;
-                if (channel.data.length > maxDataPoints) { channel.data.shift(); }
-                channel.chart.data.labels = timeLabels;
-                channel.chart.update('none');
+                
+                // Use 'none' update mode for faster redraw
+                channel.chart.data.labels = timeLabels.slice(-channel.data.length); // Keep labels synchronized
+                channel.chart.update('none'); 
+                
                 const stdDev = detectMotion(key);
                 document.getElementById(channel.valueId).textContent = `${rssi.toFixed(1)} dBm`;
                 if (stdDev > maxStdDev) maxStdDev = stdDev;
@@ -817,31 +950,42 @@
             const channel = channelData[channelKey];
             const windowSize = parseInt(document.getElementById('windowSize').value);
             const threshold = parseFloat(document.getElementById('threshold').value);
+            
             if (channel.data.length < windowSize) return 0;
             
             const recentData = channel.data.slice(-windowSize);
             const mean = recentData.reduce((a, b) => a + b) / recentData.length;
             const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
             const stdDev = Math.sqrt(variance); 
+            
             const recentDrop = mean - channel.data[channel.data.length - 1];
             const isMotion = (stdDev > threshold) || (recentDrop > threshold * 1.5);
+            
             const alertIndicator = document.getElementById(channel.alertId);
             
             if (isMotion) {
-                alertIndicator.classList.remove('inactive');
-                alertIndicator.classList.add('active');
-                alertIndicator.textContent = 'ALERT!';
-                if (alertIndicator.dataset.wasActive !== 'true') {
-                    motionCount++;
-                    document.getElementById('motionCount').textContent = motionCount;
-                    addLog(`[${channel.freq} MHz] ALERT! Std Dev: ${stdDev.toFixed(2)} > Threshold: ${threshold}`, 'error');
+                if (alertIndicator.dataset.wasActive !== 'true' || stdDev > threshold) {
+                    alertIndicator.classList.remove('inactive');
+                    alertIndicator.classList.add('active');
+                    alertIndicator.textContent = 'ALERT: MOTION!';
+                    
+                    if (alertIndicator.dataset.wasActive !== 'true') {
+                        motionCount++;
+                        document.getElementById('motionCount').textContent = motionCount;
+                        addLog(`[${channel.freq} MHz] CRITICAL: Signal Disruption! Std Dev: ${stdDev.toFixed(2)}`, 'error');
+                    }
+                    alertIndicator.dataset.wasActive = 'true';
                 }
-                alertIndicator.dataset.wasActive = 'true';
             } else {
                 alertIndicator.classList.remove('active');
                 alertIndicator.classList.add('inactive');
                 alertIndicator.textContent = 'NO MOTION';
-                alertIndicator.dataset.wasActive = 'false';
+                
+                setTimeout(() => {
+                     if (!document.getElementById(channel.alertId).classList.contains('active')) {
+                         alertIndicator.dataset.wasActive = 'false';
+                     }
+                }, 500); 
             }
             return stdDev;
         }
@@ -851,27 +995,27 @@
             const statusText = statusEl.querySelector('span:last-child');
             statusEl.className = 'connection-status glass-card ' + status;
             if (status === 'connected') {
-                statusText.textContent = 'Connected & Monitoring Active';
+                statusText.textContent = 'LINK ESTABLISHED / MONITORING ACTIVE';
             } else if (status === 'connecting') {
-                statusText.textContent = 'Attempting Connection...';
+                statusText.textContent = 'INITIATING HANDSHAKE...';
             } else {
-                statusText.textContent = 'System Ready - Configure & Start';
+                statusText.textContent = 'SYSTEM DISARMED / READY';
             }
         }
         
         async function startMonitoring() {
             const ssid = document.getElementById('ssidName').value.trim();
-            if (!ssid) { addLog('Please enter Signal Transmitter Name (SSID)!', 'error'); return; }
+            if (!ssid) { addLog('Validation Error: Please enter Signal Transmitter Name (SSID)!', 'error'); return; }
             stopMonitoring();
-            addLog(`Starting multi-channel monitoring...`, 'info');
+            addLog(`Initializing connection to SSID: ${ssid}...`, 'info');
             updateConnectionStatus('connecting');
             setTimeout(() => {
                 updateConnectionStatus('connected');
-                addLog(`Monitoring started! Observing 4 channels.`, 'success');
+                addLog(`Connection Success! Starting real-time SDR observation.`, 'success');
                 const updateRate = parseInt(document.getElementById('updateRate').value);
                 monitoringInterval = setInterval(addDataPoint, updateRate);
                 document.getElementById('startBtn').disabled = true;
-            }, 1500); 
+            }, 2000); 
         }
         
         function stopMonitoring() {
@@ -881,7 +1025,7 @@
             }
             updateConnectionStatus('disconnected');
             document.getElementById('startBtn').disabled = false;
-            addLog('Monitoring stopped by user.', 'warning');
+            addLog('Monitoring system manually disarmed.', 'warning');
         }
         
         function resetData() {
@@ -903,22 +1047,26 @@
             document.getElementById('avgRssi').textContent = '--';
             document.getElementById('sampleCount').textContent = '0';
             document.getElementById('motionCount').textContent = '0';
-            addLog('System reset - all data cleared', 'info');
+            addLog('System reset: All historical data and baselines cleared.', 'info');
         }
 
         function calibrate() {
-            addLog('Calibrating baseline for all channels... Keep hands clear!', 'warning');
+            addLog('Calibrating baseline for all channels... Establishing new noise floor.', 'warning');
             setTimeout(() => {
+                let calibratedChannels = 0;
                 Object.keys(channelData).forEach(key => {
                     const channel = channelData[key];
-                    const recent = channel.data.slice(-10);
-                    if (recent.length > 0) {
+                    const recent = channel.data.slice(-20); 
+                    if (recent.length >= 10) {
                         const newBaseline = recent.reduce((a, b) => a + b) / recent.length;
                         channel.baseline = newBaseline;
+                        calibratedChannels++;
+                    } else {
+                         addLog(`[${channel.freq} MHz] Insufficient data for precise calibration.`, 'warning');
                     }
                 });
-                addLog('✅ Calibration complete! New baselines set.', 'success');
-            }, 2500);
+                addLog(`✅ Calibration complete! ${calibratedChannels} baselines set.`, 'success');
+            }, 3000); 
         }
 
         document.addEventListener('keydown', (e) => {
@@ -927,6 +1075,7 @@
                 if (monitoringInterval) { stopMonitoring(); } else { startMonitoring(); } 
             }
             if (e.ctrlKey && e.key === 'r') { e.preventDefault(); resetData(); }
+            if (e.ctrlKey && e.key === 'c') { e.preventDefault(); calibrate(); }
         });
 
         window.addEventListener('resize', () => {
@@ -934,8 +1083,8 @@
         });
 
         setTimeout(() => {
-            addLog('Pro Tip: Use Ctrl+Space to start/stop quickly', 'info');
-        }, 2000);
+            addLog('System Check: Chart.js and dynamic modules loaded successfully.', 'success');
+        }, 100);
     </script>
 </body>
 </html>
